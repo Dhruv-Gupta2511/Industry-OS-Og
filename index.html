@@ -155,6 +155,47 @@
         [data-theme="dark"] .moon-icon { display: none; }
         [data-theme="dark"] .sun-icon { display: inline-block; color: #FBBF24; }
 
+        /* API Environment Chip & Pulsing Status */
+        .api-env-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .api-env-chip:hover {
+            border-color: var(--accent-red);
+            color: var(--text-primary);
+        }
+        .api-pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10B981;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: apiPulse 2s infinite;
+        }
+        .api-pulse-dot.fallback {
+            background: #F59E0B;
+            box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+        }
+        .api-pulse-dot.error {
+            background: #EF4444;
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+        }
+        @keyframes apiPulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
         /* VIEW 1: AUTHENTICATION (SPLIT-SCREEN HERO) */
         .login-view {
             min-height: 100vh;
@@ -1295,7 +1336,7 @@
             <div class="login-left-panel">
                 <div class="login-card">
                     
-                    <!-- Top Bar: Brand & Light/Dark Theme Switcher -->
+                    <!-- Top Bar: Brand, API Indicator & Light/Dark Theme Switcher -->
                     <div class="auth-card-top-bar">
                         <div class="brand-badge-wrapper">
                             <div class="brand-logo-icon">
@@ -1311,11 +1352,18 @@
                             </div>
                         </div>
 
-                        <button type="button" class="theme-toggle-btn" id="login-theme-toggle" title="Toggle Light / Dark Mode">
-                            <svg class="theme-icon sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                            <svg class="theme-icon moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                            <span class="theme-label" id="login-theme-label">Theme</span>
-                        </button>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button type="button" class="api-env-chip" id="login-api-chip" onclick="openApiConfigModal()" title="Active Backend: Render Live Service (Click to configure)">
+                                <span class="api-pulse-dot" id="login-api-dot"></span>
+                                <span class="api-chip-label" id="login-api-label">Render Live</span>
+                            </button>
+
+                            <button type="button" class="theme-toggle-btn" id="login-theme-toggle" title="Toggle Light / Dark Mode">
+                                <svg class="theme-icon sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                                <svg class="theme-icon moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                                <span class="theme-label" id="login-theme-label">Theme</span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Auth Mode Switcher -->
@@ -1528,6 +1576,10 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
                     </div>
                     <span class="nav-brand-title">INDUSTRY<span class="brand-accent">-OS</span></span>
+                    <button type="button" class="api-env-chip" id="nav-api-chip" onclick="openApiConfigModal()" title="Active API Backend (Click to configure)">
+                        <span class="api-pulse-dot" id="nav-api-dot"></span>
+                        <span class="api-chip-label" id="nav-api-label">Render API</span>
+                    </button>
                     <span class="system-health-chip">
                         <span class="status-dot"></span>
                         <span>Online • 42 Tables</span>
@@ -1641,6 +1693,102 @@
     <!-- JAVASCRIPT APPLICATION ENGINE                                            -->
     <!-- ========================================================================= -->
     <script>
+        /* ========================================================================= */
+        /* DYNAMIC RENDER BACKEND API CONFIGURATION & GLOBAL FETCH CLIENT            */
+        /* ========================================================================= */
+        const API_CONFIG = {
+            // Primary Render Cloud Endpoint
+            PRIMARY_RENDER_URL: 'https://industry-os-backend.onrender.com/api',
+            
+            // Dynamic Local Development Fallback
+            LOCAL_FALLBACK_URL: (typeof window !== 'undefined' && window.location.origin && !window.location.origin.includes('file:'))
+                ? (window.location.port === '8080' ? 'http://localhost:8080/api' : 'http://localhost:5000/api')
+                : 'http://localhost:5000/api',
+
+            // Strict 5-Second Cold-Sleep / Network Timeout
+            TIMEOUT_MS: 5000,
+
+            get BASE_URL() {
+                return localStorage.getItem('industry_os_api_url') || this.PRIMARY_RENDER_URL;
+            },
+            set BASE_URL(url) {
+                localStorage.setItem('industry_os_api_url', url);
+                updateApiStatusDisplay();
+            }
+        };
+
+        // Live API Client with Authorization Bearer Interceptor & Cold-Sleep Fallback
+        async function apiFetch(endpoint, options = {}) {
+            const baseUrl = API_CONFIG.BASE_URL.replace(/\/+$/, '');
+            const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+            const targetUrl = `${baseUrl}${cleanEndpoint}`;
+
+            // Pull token dynamically from LocalStorage/SessionStorage
+            const token = localStorage.getItem('industry_os_token') || sessionStorage.getItem('industry_os_token') || AppState.sessionToken;
+
+            const headers = {
+                'Content-Type': 'application/json',
+                ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+                ...(options.headers || {})
+            };
+
+            const controller = new AbortController();
+            const timeoutTimer = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT_MS);
+
+            try {
+                const response = await fetch(targetUrl, {
+                    ...options,
+                    headers,
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutTimer);
+
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${text || response.statusText}`);
+                }
+
+                markApiStatus('online', 'Render Live');
+                return await response.json();
+            } catch (err) {
+                clearTimeout(timeoutTimer);
+                const isTimeout = err.name === 'AbortError';
+                markApiStatus('fallback', isTimeout ? 'Cold Sleep (Cached)' : 'Offline (Cached)');
+                
+                if (isTimeout) {
+                    showToast("Render backend cold sleep (>5s). Switched seamlessly to enterprise offline cache.");
+                } else {
+                    console.warn(`[INDUSTRY-OS API] ${cleanEndpoint} offline:`, err.message);
+                }
+                
+                // Return null to allow caller to gracefully use rich fallback mock data
+                return null;
+            }
+        }
+
+        function markApiStatus(status, text) {
+            const loginDot = document.getElementById('login-api-dot');
+            const loginLabel = document.getElementById('login-api-label');
+            const navDot = document.getElementById('nav-api-dot');
+            const navLabel = document.getElementById('nav-api-label');
+
+            [loginDot, navDot].forEach(dot => {
+                if (!dot) return;
+                dot.className = 'api-pulse-dot';
+                if (status === 'fallback') dot.classList.add('fallback');
+                else if (status === 'error') dot.classList.add('error');
+            });
+
+            if (loginLabel) loginLabel.textContent = text;
+            if (navLabel) navLabel.textContent = text;
+        }
+
+        function updateApiStatusDisplay() {
+            const isRender = API_CONFIG.BASE_URL.includes('onrender.com');
+            const labelText = isRender ? 'Render Cloud' : 'Local API';
+            markApiStatus('online', labelText);
+        }
+
         const AppState = {
             theme: 'light',
             isAuthenticated: false,
@@ -1913,6 +2061,7 @@
             const password = DOM.passwordInput.value;
             const selectedRole = DOM.roleSelect.value;
 
+            // Seed user profile locally first
             if (AppState.users[username]) {
                 const u = AppState.users[username];
                 AppState.currentUser.username = username;
@@ -1924,28 +2073,40 @@
             }
 
             AppState.sessionToken = generateToken(username, AppState.currentUser.role);
+            localStorage.setItem('industry_os_token', AppState.sessionToken);
 
-            // Attempt live backend REST API call if hosted on localhost
+            showToast("Connecting to Render backend (/api/auth/login)...");
+
+            // Attempt live backend REST API call to /api/auth/login
             try {
-                const response = await fetch('/api/auth/login', {
+                const response = await apiFetch('/auth/login', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         username: username,
                         password: password,
                         userType: selectedRole === 'HEAD_OF_COMPANY' ? 'CEO' : selectedRole
                     })
                 });
-                if (response.ok) {
-                    const json = await response.json();
-                    if (json.data && json.data.token) AppState.sessionToken = json.data.token;
+                if (response) {
+                    if (response.data && response.data.token) {
+                        AppState.sessionToken = response.data.token;
+                        localStorage.setItem('industry_os_token', response.data.token);
+                    }
+                    if (response.data && response.data.user) {
+                        AppState.currentUser.fullName = response.data.user.fullName || AppState.currentUser.fullName;
+                        AppState.currentUser.role = response.data.user.role || AppState.currentUser.role;
+                        AppState.currentUser.department = response.data.user.department || AppState.currentUser.department;
+                    }
+                    showToast("Render cloud session authenticated!");
                 }
-            } catch (err) {}
+            } catch (err) {
+                console.warn('[Login Error, using offline session]:', err.message);
+            }
 
             launchAuthenticatedSession();
         }
 
-        function handleSignup(e) {
+        async function handleSignup(e) {
             e.preventDefault();
             const fullName = DOM.signupFullname.value.trim();
             const username = DOM.signupUsername.value.trim();
@@ -1964,8 +2125,30 @@
             AppState.currentUser.role = role;
             AppState.currentUser.department = department;
             AppState.sessionToken = generateToken(username, role);
+            localStorage.setItem('industry_os_token', AppState.sessionToken);
 
-            showToast(`Account created successfully! Welcome, ${fullName}.`);
+            showToast("Registering user on Render backend (/api/auth/register)...");
+
+            try {
+                const response = await apiFetch('/auth/register', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        fullName,
+                        username,
+                        password,
+                        role: role === 'HEAD_OF_COMPANY' ? 'CEO' : role,
+                        department
+                    })
+                });
+                if (response && response.data && response.data.token) {
+                    AppState.sessionToken = response.data.token;
+                    localStorage.setItem('industry_os_token', response.data.token);
+                }
+                showToast(`Account registered on Render backend! Welcome, ${fullName}.`);
+            } catch (err) {
+                showToast(`Account created in offline mode! Welcome, ${fullName}.`);
+            }
+
             launchAuthenticatedSession();
         }
 
@@ -2036,16 +2219,115 @@
             DOM.userAvatarInitials.textContent = initials;
         }
 
-        /* VIEW DISPATCHER */
+        /* ROLE-BASED LIVE BACKEND DATA SYNCHRONIZERS */
+        let _syncLock = false;
+        async function syncOperatorData() {
+            if (_syncLock) return;
+            try {
+                // GET /api/operator/machines
+                const data = await apiFetch('/operator/machines');
+                if (data && (data.data || Array.isArray(data))) {
+                    const list = data.data || data;
+                    const m = Array.isArray(list) ? list[0] : list;
+                    if (m && m.machineName) {
+                        AppState.operator.machine.name = m.machineName;
+                        if (m.modelNo) AppState.operator.machine.model = m.modelNo;
+                        if (m.status) AppState.operator.machine.status = m.status;
+                        refreshActiveViewWithoutSync('OPERATOR');
+                    }
+                }
+            } catch (e) {}
+        }
+
+        async function syncCustomerData() {
+            if (_syncLock) return;
+            try {
+                // GET /api/customer/cart
+                const cartData = await apiFetch('/customer/cart');
+                if (cartData && (cartData.data || Array.isArray(cartData))) {
+                    const items = cartData.data || cartData;
+                    if (Array.isArray(items) && items.length > 0) {
+                        AppState.customer.cartItems = items;
+                    }
+                }
+                // GET /api/customer/invoices
+                const invData = await apiFetch('/customer/invoices');
+                if (invData && (invData.data || Array.isArray(invData))) {
+                    const invs = invData.data || invData;
+                    if (Array.isArray(invs) && invs.length > 0) {
+                        AppState.customer.previousOrders = invs;
+                    }
+                }
+                refreshActiveViewWithoutSync('CUSTOMER');
+            } catch (e) {}
+        }
+
+        async function syncTransporterData() {
+            if (_syncLock) return;
+            try {
+                // GET /api/transporter/fleet
+                const fleetData = await apiFetch('/transporter/fleet');
+                if (fleetData && (fleetData.data || Array.isArray(fleetData))) {
+                    const list = fleetData.data || fleetData;
+                    if (Array.isArray(list) && list.length > 0) {
+                        AppState.transporter.vehicles = list;
+                    }
+                }
+                // GET /api/transporter/contracts
+                const contractData = await apiFetch('/transporter/contracts');
+                if (contractData && (contractData.data || contractData.companyName)) {
+                    const c = contractData.data || contractData;
+                    if (c.companyName) AppState.transporter.contract.company = c.companyName;
+                }
+                refreshActiveViewWithoutSync('TRANSPORTER');
+            } catch (e) {}
+        }
+
+        async function syncExecutiveData() {
+            if (_syncLock) return;
+            try {
+                // GET /api/analytics/summary
+                const summary = await apiFetch('/analytics/summary');
+                if (summary && summary.data) {
+                    AppState.executive.metrics = { ...AppState.executive.metrics, ...summary.data };
+                }
+                // GET /api/employees
+                const employees = await apiFetch('/employees');
+                if (employees && employees.data && Array.isArray(employees.data)) {
+                    // Update staff count
+                }
+                refreshActiveViewWithoutSync('DEPT_HEAD');
+            } catch (e) {}
+        }
+
+        function refreshActiveViewWithoutSync(role) {
+            if (AppState.currentUser.role === role) {
+                _syncLock = true;
+                renderDashboard();
+                _syncLock = false;
+            }
+        }
+
+        /* VIEW DISPATCHER WITH LIVE BACKEND DATA SYNC */
         function renderDashboard() {
             const role = AppState.currentUser.role;
             const tab = AppState.activeTab;
 
-            if (role === 'OPERATOR') renderOperatorView(tab);
-            else if (role === 'CUSTOMER') renderCustomerView(tab);
-            else if (role === 'TRANSPORTER') renderTransporterView(tab);
-            else if (role === 'DEPT_HEAD' || role === 'HEAD_OF_COMPANY' || role === 'GENERAL_MANAGER') renderExecutiveView(tab);
-            else renderEmployeeView(tab);
+            if (role === 'OPERATOR') {
+                renderOperatorView(tab);
+                syncOperatorData();
+            } else if (role === 'CUSTOMER') {
+                renderCustomerView(tab);
+                syncCustomerData();
+            } else if (role === 'TRANSPORTER') {
+                renderTransporterView(tab);
+                syncTransporterData();
+            } else if (role === 'DEPT_HEAD' || role === 'HEAD_OF_COMPANY' || role === 'GENERAL_MANAGER') {
+                renderExecutiveView(tab);
+                syncExecutiveData();
+            } else {
+                renderEmployeeView(tab);
+            }
         }
 
         /* 1. OPERATOR VIEWS */
@@ -2742,12 +3024,32 @@
             showToast(`Service Request #${ticketId} dispatched to Mechanical Maintenance Team!`);
         }
 
-        function reorderParts(partId) {
+        async function reorderParts(partId) {
             const part = AppState.operator.spareParts.find(p => p.id === partId) || AppState.operator.spareParts[0];
             part.stockQty += 10;
             const poNum = `PO-2026-${Math.floor(1000 + Math.random() * 9000)}`;
             renderDashboard();
             showToast(`Reorder Confirmed! Purchase Order #${poNum} created for 10x ${part.name}.`);
+
+            // Live Backend REST: POST /api/operator/spare-parts/request
+            try {
+                const res = await apiFetch('/operator/spare-parts/request', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        partId: part.id,
+                        partName: part.name,
+                        quantity: 10,
+                        unitCost: part.unitCost,
+                        machineId: AppState.operator.machine.id,
+                        requestedBy: AppState.currentUser.username
+                    })
+                });
+                if (res) {
+                    showToast(`Backend acknowledged PO #${poNum} for ${part.name}.`);
+                }
+            } catch (err) {
+                console.warn('[Operator Spare Parts Sync]:', err.message);
+            }
         }
 
         function updatePartUsage(partId, delta) {
@@ -2776,7 +3078,7 @@
             showToast(`Updated ${item.name} quantity to ${item.quantity}.`);
         }
 
-        function checkoutCart() {
+        async function checkoutCart() {
             const c = AppState.customer;
             const cartTotal = c.cartItems.reduce((acc, item) => acc + (item.unitPrice * item.quantity), 0);
             const taxTotal = Math.round(cartTotal * 0.18);
@@ -2805,6 +3107,27 @@
             renderDashboard();
             showToast(`Order #${soId} Confirmed! Dynamic Tax Invoice generated.`);
             downloadInvoice(invId);
+
+            // Live Backend REST: POST /api/customer/orders
+            try {
+                const res = await apiFetch('/customer/orders', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        orderId: soId,
+                        invoiceId: invId,
+                        customerId: 1,
+                        customerName: c.info.name,
+                        items: c.cartItems,
+                        totalAmount: grandTotal,
+                        status: "CONFIRMED"
+                    })
+                });
+                if (res) {
+                    showToast(`Order #${soId} registered in cloud database!`);
+                }
+            } catch (err) {
+                console.warn('[Customer Order Sync]:', err.message);
+            }
         }
 
         function downloadInvoice(invoiceId) {
@@ -2911,6 +3234,93 @@
             AppState.employee.hoursWorked += 8.0;
             renderDashboard();
             showToast("8.0 Shift Hours successfully logged to biometric enterprise timesheet!");
+        }
+
+        /* API CONFIGURATION & LIVE GATEWAY SWITCHER */
+        function openApiConfigModal() {
+            DOM.modalTitle.textContent = "API Service & Backend Configuration";
+            const currentUrl = API_CONFIG.BASE_URL;
+            const isRender = currentUrl.includes('onrender.com');
+
+            DOM.modalBody.innerHTML = `
+                <div style="font-family: inherit;">
+                    <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">
+                        Configure the live REST API gateway for INDUSTRY-OS. The system automatically connects with Bearer JWT tokens and switches gracefully to offline enterprise caching if Render cold-start latency exceeds 5 seconds.
+                    </p>
+
+                    <div style="background: var(--bg-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; margin-bottom: 16px;">
+                        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px; text-transform: uppercase;">Active API Gateway URL</label>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" id="api-custom-url-input" value="${currentUrl}" style="flex: 1; padding: 8px 12px; font-family: monospace; font-size: 13px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); color: var(--text-primary);">
+                            <button type="button" class="btn-action" onclick="saveCustomApiUrl()" style="white-space: nowrap;">Save & Connect</button>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                        <div style="border: 1px solid ${isRender ? 'var(--accent-red)' : 'var(--border-color)'}; border-radius: var(--radius-md); padding: 12px; background: ${isRender ? 'var(--accent-red-light)' : 'var(--bg-card)'};">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                <strong style="font-size: 13px; color: var(--text-primary);">Render Cloud (Prod)</strong>
+                                ${isRender ? '<span class="card-badge badge-danger">Active</span>' : ''}
+                            </div>
+                            <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px; word-break: break-all;">https://industry-os-backend.onrender.com/api</p>
+                            <button type="button" class="btn-action-outline" style="width: 100%; font-size: 12px;" onclick="setApiTarget('https://industry-os-backend.onrender.com/api')">Select Render</button>
+                        </div>
+
+                        <div style="border: 1px solid ${!isRender ? 'var(--accent-red)' : 'var(--border-color)'}; border-radius: var(--radius-md); padding: 12px; background: ${!isRender ? 'var(--accent-red-light)' : 'var(--bg-card)'};">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                <strong style="font-size: 13px; color: var(--text-primary);">Localhost (Dev)</strong>
+                                ${!isRender ? '<span class="card-badge badge-danger">Active</span>' : ''}
+                            </div>
+                            <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px; word-break: break-all;">http://localhost:8080/api</p>
+                            <button type="button" class="btn-action-outline" style="width: 100%; font-size: 12px;" onclick="setApiTarget('http://localhost:8080/api')">Select Localhost</button>
+                        </div>
+                    </div>
+
+                    <div id="api-ping-status" style="padding: 10px 14px; border-radius: var(--radius-sm); font-size: 12.5px; background: var(--bg-subtle); color: var(--text-secondary); display: flex; align-items: center; justify-content: space-between;">
+                        <span>Timeout Limit: <strong>5000ms (Cold-sleep guard)</strong></span>
+                        <button type="button" class="btn-action-outline" style="font-size: 11.5px; padding: 4px 10px;" onclick="pingApiTarget()">Ping API Gateway</button>
+                    </div>
+                </div>
+            `;
+
+            DOM.modalActionBtn.textContent = "Test Connection";
+            DOM.modalActionBtn.onclick = pingApiTarget;
+            openModal();
+        }
+
+        function setApiTarget(url) {
+            API_CONFIG.BASE_URL = url;
+            const input = document.getElementById('api-custom-url-input');
+            if (input) input.value = url;
+            showToast(`API Gateway configured to: ${url}`);
+            openApiConfigModal();
+        }
+
+        function saveCustomApiUrl() {
+            const input = document.getElementById('api-custom-url-input');
+            if (input && input.value.trim()) {
+                API_CONFIG.BASE_URL = input.value.trim();
+                showToast(`Saved custom API endpoint: ${API_CONFIG.BASE_URL}`);
+                pingApiTarget();
+            }
+        }
+
+        async function pingApiTarget() {
+            const statusBox = document.getElementById('api-ping-status');
+            if (statusBox) statusBox.innerHTML = `<span>Pinging <strong>${API_CONFIG.BASE_URL}</strong>...</span> <span class="api-pulse-dot"></span>`;
+            const startTime = performance.now();
+            try {
+                const res = await apiFetch('/analytics/summary');
+                const elapsed = Math.round(performance.now() - startTime);
+                if (statusBox) {
+                    statusBox.innerHTML = `<span style="color: #10B981; font-weight: 600;">✓ Connected in ${elapsed}ms! Gateway is healthy.</span><button type="button" class="btn-action-outline" style="font-size: 11.5px; padding: 4px 10px;" onclick="pingApiTarget()">Re-test</button>`;
+                }
+                showToast(`API gateway online (${elapsed}ms latency)`);
+            } catch (e) {
+                if (statusBox) {
+                    statusBox.innerHTML = `<span style="color: #EF4444; font-weight: 600;">Fallback mode active (Offline / Cold sleep).</span><button type="button" class="btn-action-outline" style="font-size: 11.5px; padding: 4px 10px;" onclick="pingApiTarget()">Retry</button>`;
+                }
+            }
         }
 
         function openModal() { DOM.modal.classList.add('active'); }

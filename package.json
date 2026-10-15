@@ -1,0 +1,21 @@
+{
+  "name": "industry-os",
+  "version": "1.0.0",
+  "description": "INDUSTRY-OS Enterprise Operations Platform",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve -p 3000 .",
+    "dev": "npx serve -p 3000 .",
+    "frontend": "npx serve -p 3000 frontend",
+    "backend": "cd industry-os && mvnw.cmd spring-boot:run"
+  },
+  "keywords": [
+    "industry-os",
+    "enterprise",
+    "manufacturing",
+    "spring-boot"
+  ],
+  "author": "",
+  "license": "ISC"
+}
+

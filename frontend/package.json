@@ -1,0 +1,20 @@
+{
+  "name": "industry-os-frontend",
+  "version": "1.0.0",
+  "description": "INDUSTRY-OS Enterprise Operations Platform Frontend",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve -p 3000 .",
+    "dev": "npx serve -p 3000 ."
+  },
+  "keywords": [
+    "industry-os",
+    "manufacturing",
+    "operations",
+    "telemetry",
+    "dashboard"
+  ],
+  "author": "",
+  "license": "ISC"
+}
+
