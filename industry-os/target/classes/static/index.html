@@ -1320,6 +1320,184 @@
         .invoice-total-box { margin-top: 16px; padding: 16px; background: var(--bg-subtle); border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 6px; }
         .invoice-total-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary); }
         .invoice-grand-total { font-size: 16px; font-weight: 800; color: var(--accent-red); border-top: 1px solid var(--border-color); padding-top: 8px; margin-top: 4px; }
+
+        /* MACHINE HEALTH CRITICAL THRESHOLD PULSE */
+        @keyframes criticalPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6);
+                border-color: #EF4444;
+            }
+            50% {
+                box-shadow: 0 0 18px 5px rgba(239, 68, 68, 0.45);
+                border-color: #DC2626;
+            }
+        }
+
+        @keyframes criticalTextFlash {
+            0%, 100% { opacity: 1; color: #EF4444; }
+            50% { opacity: 0.45; color: #DC2626; }
+        }
+
+        .critical-flash {
+            animation: criticalPulse 1.2s infinite ease-in-out !important;
+            border-color: #EF4444 !important;
+        }
+
+        .badge-critical-flash {
+            background: #FEE2E2 !important;
+            color: #991B1B !important;
+            border: 1px solid #DC2626 !important;
+            font-weight: 800 !important;
+            animation: criticalPulse 1s infinite alternate;
+        }
+
+        [data-theme="dark"] .badge-critical-flash {
+            background: rgba(220, 38, 38, 0.3) !important;
+            color: #FCA5A5 !important;
+            border-color: #EF4444 !important;
+        }
+
+        /* LIVE ACTIVITY & AUDIT LOGS CONSOLE PANEL */
+        .audit-panel-wrap {
+            margin-top: 26px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.25s ease;
+        }
+
+        .audit-panel-header {
+            padding: 16px 22px;
+            background: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .audit-title-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .audit-title-group h3 {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .audit-badge-pill {
+            background: var(--accent-red-light);
+            color: var(--accent-red);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 9px;
+            border-radius: 12px;
+            border: 1px solid var(--accent-red);
+        }
+
+        .audit-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .audit-filter-btn {
+            padding: 5px 12px;
+            font-size: 11.5px;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .audit-filter-btn:hover {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        .audit-filter-btn.active {
+            background: var(--accent-red);
+            color: #FFFFFF;
+            border-color: var(--accent-red);
+        }
+
+        .audit-table-container {
+            max-height: 380px;
+            overflow-y: auto;
+        }
+
+        .audit-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12.5px;
+        }
+
+        .audit-table th {
+            background: var(--bg-subtle);
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--text-muted);
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .audit-table td {
+            padding: 11px 14px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            vertical-align: middle;
+        }
+
+        .audit-table tr:hover {
+            background: var(--bg-subtle);
+        }
+
+        .audit-tag {
+            font-size: 10.5px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+
+        .tag-insert { background: #DCFCE7; color: #166534; border: 1px solid #86EFAC; }
+        .tag-update { background: #DBEAFE; color: #1E40AF; border: 1px solid #93C5FD; }
+        .tag-delete { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+
+        [data-theme="dark"] .tag-insert { background: rgba(34, 197, 94, 0.2); color: #86EFAC; border-color: #22C55E; }
+        [data-theme="dark"] .tag-update { background: rgba(59, 130, 246, 0.2); color: #93C5FD; border-color: #3B82F6; }
+        [data-theme="dark"] .tag-delete { background: rgba(239, 68, 68, 0.2); color: #FCA5A5; border-color: #EF4444; }
+
+        .audit-payload-cell {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 11.5px;
+            max-width: 340px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-primary);
+        }
     </style>
 </head>
 <body>
@@ -1671,6 +1849,63 @@
 
             <!-- Responsive 3-Column Grid -->
             <div id="role-cards-grid" class="cards-grid-3col"></div>
+
+            <!-- LIVE ACTIVITY & AUDIT LOGS CONSOLE PANEL -->
+            <div id="audit-log-section" class="audit-panel-wrap">
+                <div class="audit-panel-header">
+                    <div class="audit-title-group">
+                        <div class="line-art-icon" style="color: var(--accent-red);">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3>Activity & Live Audit Console</h3>
+                            <p style="font-size: 11.5px; color: var(--text-muted); margin: 0;">Real-time CRUD transaction audit across 42 relational database entities</p>
+                        </div>
+                        <span id="audit-total-pill" class="audit-badge-pill">7 Events</span>
+                    </div>
+
+                    <div class="audit-controls">
+                        <div class="audit-filter-group" id="audit-filter-buttons">
+                            <button type="button" class="audit-filter-btn active" data-action="ALL">ALL (<span id="count-all">7</span>)</button>
+                            <button type="button" class="audit-filter-btn" data-action="INSERT">INSERT (<span id="count-insert">3</span>)</button>
+                            <button type="button" class="audit-filter-btn" data-action="UPDATE">UPDATE (<span id="count-update">3</span>)</button>
+                            <button type="button" class="audit-filter-btn" data-action="DELETE">DELETE (<span id="count-delete">1</span>)</button>
+                        </div>
+                        <button type="button" class="btn-action-outline" style="font-size: 11.5px; padding: 4px 9px;" onclick="openCreateAuditLogModal()" title="Simulate a new CRUD mutation">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            <span>+ Simulate CRUD</span>
+                        </button>
+                        <button type="button" class="btn-action-outline" style="font-size: 11.5px; padding: 4px 9px;" onclick="exportAuditLogs()" title="Export JSON Log Stream">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            <span>Export</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="audit-table-container">
+                    <table class="audit-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 140px;">Timestamp</th>
+                                <th style="width: 100px;">Action Type</th>
+                                <th style="width: 170px;">Entity Name</th>
+                                <th style="width: 180px;">User / Role</th>
+                                <th>Payload Summary</th>
+                                <th style="width: 110px; text-align: center;">Audit Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="audit-table-body">
+                            <!-- Injected dynamically by renderAuditLogs() -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </main>
     </section>
 
@@ -1794,6 +2029,17 @@
             isAuthenticated: false,
             activeTab: 'overview',
             sessionToken: null,
+            auditFilter: 'ALL',
+
+            auditLogs: [
+                { id: "AUD-1094", timestamp: "2026-10-15 15:12:04", action: "INSERT", entity: "PURCHASE_ORDER", user: "operator1 (Aarti Yadav)", payload: "PO-2026-8819 created for 10x Bearing 6205 (₹4,500)", status: "SUCCESS" },
+                { id: "AUD-1093", timestamp: "2026-10-15 15:08:42", action: "UPDATE", entity: "SPARE_PART", user: "operator1 (Aarti Yadav)", payload: "Bearing 6205 stock decremented: used=4, remaining=36", status: "SUCCESS" },
+                { id: "AUD-1092", timestamp: "2026-10-15 14:55:18", action: "INSERT", entity: "SALES_ORDER", user: "customer1 (Acme Eng)", payload: "SO-2026-9041 confirmed with 3 products (₹3,085,700 incl. 18% GST)", status: "SUCCESS" },
+                { id: "AUD-1091", timestamp: "2026-10-15 14:40:11", action: "UPDATE", entity: "MACHINE_TELEMETRY", user: "operator1 (Aarti Yadav)", payload: "Mazak QT-200 harmonic vibration & thermal diagnostic executed (Health: 94%)", status: "SUCCESS" },
+                { id: "AUD-1090", timestamp: "2026-10-15 14:15:30", action: "INSERT", entity: "TIMESHEET", user: "employee1 (Rajesh S.)", payload: "8.0 Shift Hours logged to biometric timesheet for Workstation #3", status: "SUCCESS" },
+                { id: "AUD-1089", timestamp: "2026-10-15 13:58:02", action: "UPDATE", entity: "FLEET_DISPATCH", user: "transporter1 (SafeGuard)", payload: "Truck RJ14CD5678 speed updated to 64 km/h on NH48 corridor", status: "SUCCESS" },
+                { id: "AUD-1088", timestamp: "2026-10-15 13:20:15", action: "DELETE", entity: "PURCHASE_DRAFT", user: "depthead_prod (Geeta G.)", payload: "Draft PO #DRAFT-881 superseded and purged from staging crib", status: "SUCCESS" }
+            ],
 
             currentUser: {
                 username: 'operator1',
@@ -1821,9 +2067,10 @@
                     plant: "Pune Works",
                     status: "Operational",
                     healthScore: 94,
-                    vibration: "1.4 mm/s (Normal)",
-                    temp: "42°C (Optimal)",
-                    recommendation: "Operational tolerances within optimal limits. Spindle bearing vibration normal."
+                    vibration: "1.4 mm/s (Optimal)",
+                    temp: "42°C (Normal)",
+                    recommendation: "Operational tolerances within optimal limits. Spindle bearing vibration normal.",
+                    simulating: true
                 },
                 telemetry: { rpm: 2450, spindleLoad: "64%", coolantPressure: "3.2 Bar", runtimeToday: "6.5 hrs", totalPartsCut: 184 },
                 spareParts: [
@@ -1931,13 +2178,23 @@
             modalCloseBtn: document.getElementById('modal-close-btn'),
             modalCancelBtn: document.getElementById('modal-cancel-btn'),
             modalActionBtn: document.getElementById('modal-action-btn'),
-            toastContainer: document.getElementById('toast-container')
+            toastContainer: document.getElementById('toast-container'),
+            auditLogSection: document.getElementById('audit-log-section'),
+            auditTableBody: document.getElementById('audit-table-body'),
+            auditTotalPill: document.getElementById('audit-total-pill'),
+            auditFilterButtons: document.querySelectorAll('.audit-filter-btn'),
+            countAll: document.getElementById('count-all'),
+            countInsert: document.getElementById('count-insert'),
+            countUpdate: document.getElementById('count-update'),
+            countDelete: document.getElementById('count-delete')
         };
 
         document.addEventListener('DOMContentLoaded', () => {
             initTheme();
             setupEventListeners();
             initClock();
+            initHealthSimulation();
+            renderAuditLogs();
         });
 
         /* THEME CONTROLLER */
@@ -1958,7 +2215,10 @@
                 const label = DOM.navThemeToggle.querySelector('.theme-label');
                 if (label) label.textContent = theme === 'dark' ? 'Dark' : 'Light';
             }
-            if (notify) showToast(`Theme switched to ${theme.toUpperCase()} mode.`);
+            if (notify) {
+                showToast(`Theme switched to ${theme.toUpperCase()} mode.`);
+                logAudit('UPDATE', 'THEME_PREFERENCE', AppState.currentUser.username, { themeMode: theme });
+            }
         }
 
         function toggleTheme() {
@@ -2007,6 +2267,17 @@
                     showToast(`Switched view to ${tab.querySelector('span').textContent}`);
                 });
             });
+
+            // Audit Filter Click Listeners
+            if (DOM.auditFilterButtons) {
+                DOM.auditFilterButtons.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const filterAction = btn.getAttribute('data-action');
+                        setAuditFilter(filterAction);
+                    });
+                });
+            }
 
             DOM.refreshDataBtn.addEventListener('click', () => {
                 renderDashboard();
@@ -2308,6 +2579,433 @@
             }
         }
 
+        /* ========================================================================= */
+        /* MACHINE HEALTH & LIFE DEGRADATION SIMULATION ENGINE                       */
+        /* ========================================================================= */
+        let _healthSimInterval = null;
+
+        function getMachineHealthMetadata(score) {
+            if (score > 70) {
+                return {
+                    level: 'optimal',
+                    label: 'Optimal',
+                    badgeClass: 'badge-success',
+                    barColor: '#10B981',
+                    status: 'Optimal',
+                    cardClass: '',
+                    isCritical: false,
+                    recommendation: 'Operational tolerances within optimal limits. Spindle bearing vibration normal.'
+                };
+            } else if (score >= 30) {
+                return {
+                    level: 'warning',
+                    label: 'Warning - Service Recommended',
+                    badgeClass: 'badge-warning',
+                    barColor: '#F59E0B',
+                    status: 'Degraded Operation',
+                    cardClass: '',
+                    isCritical: false,
+                    recommendation: 'Harmonic vibration drift detected. Preventive bearing lubrication & calibration recommended.'
+                };
+            } else {
+                return {
+                    level: 'critical',
+                    label: 'Maintenance Required - Immediate Shutdown',
+                    badgeClass: 'badge-critical-flash',
+                    barColor: '#EF4444',
+                    status: 'CRITICAL SHUTDOWN',
+                    cardClass: 'critical-flash',
+                    isCritical: true,
+                    recommendation: 'CRITICAL ALARM: Spindle thermal runaway (>70°C). Bearing oscillation exceeds ISO tolerances. Immediate shutdown engaged!'
+                };
+            }
+        }
+
+        function applyMachineDegradationTelemetry(m) {
+            const meta = getMachineHealthMetadata(m.healthScore);
+            m.status = meta.status;
+            m.recommendation = meta.recommendation;
+
+            if (m.healthScore > 70) {
+                m.vibration = "1.2 mm/s (Optimal)";
+                m.temp = "41.5°C (Normal)";
+            } else if (m.healthScore >= 30) {
+                m.vibration = "3.8 mm/s (Elevated Vibration)";
+                m.temp = "58.2°C (Warning Level)";
+            } else {
+                m.vibration = "7.6 mm/s (CRITICAL DRIFT)";
+                m.temp = "78.4°C (THERMAL RUNAWAY)";
+            }
+        }
+
+        function initHealthSimulation() {
+            if (_healthSimInterval) clearInterval(_healthSimInterval);
+            _healthSimInterval = setInterval(() => {
+                const m = AppState.operator ? AppState.operator.machine : null;
+                if (!m || !m.simulating) return;
+
+                // Gradually decrease machine health during operation
+                if (m.healthScore > 15) {
+                    const oldScore = m.healthScore;
+                    m.healthScore = Math.max(15, m.healthScore - 1);
+                    applyMachineDegradationTelemetry(m);
+
+                    if (oldScore > 70 && m.healthScore <= 70) {
+                        showToast("⚠️ Machine Telemetry: Health dipped below 70% (Warning State).");
+                        logAudit('UPDATE', 'MACHINE_STATE', AppState.currentUser.username, {
+                            event: 'HEALTH_WARNING_THRESHOLD',
+                            machineId: m.id,
+                            score: m.healthScore,
+                            status: 'Warning - Service Recommended'
+                        });
+                    } else if (oldScore >= 30 && m.healthScore < 30) {
+                        showToast("🚨 CRITICAL MACHINE ALARM: Health < 30%! Immediate Technician Required!");
+                        logAudit('UPDATE', 'MACHINE_STATE', AppState.currentUser.username, {
+                            event: 'CRITICAL_FAILURE_THRESHOLD',
+                            machineId: m.id,
+                            score: m.healthScore,
+                            status: 'Immediate Shutdown Engaged'
+                        });
+                    }
+
+                    if (AppState.currentUser.role === 'OPERATOR') {
+                        renderOperatorView(AppState.activeTab);
+                    }
+                }
+            }, 7000);
+        }
+
+        function triggerWearAndTear(points = 8) {
+            const m = AppState.operator.machine;
+            const oldScore = m.healthScore;
+            m.healthScore = Math.max(10, m.healthScore - points);
+            applyMachineDegradationTelemetry(m);
+
+            logAudit('UPDATE', 'MACHINE_HEALTH', AppState.currentUser.username, {
+                action: 'WEAR_SIMULATION',
+                previousScore: oldScore,
+                newScore: m.healthScore,
+                delta: -points
+            });
+
+            if (m.healthScore < 30) {
+                showToast(`🚨 CRITICAL WEAR: Machine Health dropped to ${m.healthScore}%! E-Stop Active.`);
+            } else if (m.healthScore <= 70) {
+                showToast(`⚠️ Machine Wear Simulated: Health decreased to ${m.healthScore}%.`);
+            } else {
+                showToast(`Simulated duty cycle wear: Health is now ${m.healthScore}%.`);
+            }
+            renderDashboard();
+        }
+
+        function triggerCriticalDrop() {
+            const m = AppState.operator.machine;
+            m.healthScore = 24;
+            applyMachineDegradationTelemetry(m);
+
+            logAudit('UPDATE', 'MACHINE_HEALTH', AppState.currentUser.username, {
+                action: 'CRITICAL_FAILURE_SIMULATION',
+                score: 24,
+                hazard: 'Spindle thermal runaway (78.4°C)',
+                status: 'CRITICAL SHUTDOWN'
+            });
+
+            showToast("🚨 CRITICAL MACHINE DROP TRIGGERED: Health dropped to 24% (<30%)! Immediate Shutdown Engaged.");
+            renderDashboard();
+        }
+
+        function resetMachineHealth() {
+            const m = AppState.operator.machine;
+            m.healthScore = 98;
+            applyMachineDegradationTelemetry(m);
+
+            logAudit('UPDATE', 'MACHINE_HEALTH', AppState.currentUser.username, {
+                action: 'FACTORY_RESET_OVERHAUL',
+                score: 98,
+                status: 'Optimal'
+            });
+
+            showToast("✅ Machine overhaul & recalibration complete. Health restored to 98% (Optimal).");
+            renderDashboard();
+        }
+
+        function toggleHealthSimulation() {
+            const m = AppState.operator.machine;
+            m.simulating = !m.simulating;
+            showToast(m.simulating ? "▶ Machine life degradation simulation ACTIVE (7s interval)." : "⏸ Machine degradation simulation PAUSED.");
+            renderDashboard();
+        }
+
+        function requestTechnicianEmergency() {
+            const m = AppState.operator.machine;
+            const ticketId = `EMERG-TECH-${Math.floor(1000 + Math.random() * 9000)}`;
+
+            const emergencyTicket = {
+                id: ticketId,
+                type: "Emergency Overhaul",
+                date: new Date().toISOString().split('T')[0],
+                tech: "Senior Master Tech: Rajesh Varma (Dispatched)",
+                status: "DISPATCHED_URGENT",
+                desc: `Spindle thermal runaway & critical bearing wear at ${m.healthScore}% health.`
+            };
+            AppState.operator.maintenanceLogs.unshift(emergencyTicket);
+
+            m.healthScore = 95;
+            applyMachineDegradationTelemetry(m);
+
+            logAudit('INSERT', 'EMERGENCY_DISPATCH', AppState.currentUser.username, {
+                ticketId: ticketId,
+                machine: `${m.name} (${m.model})`,
+                priority: 'CRITICAL_P1',
+                technician: 'Rajesh Varma',
+                resolution: 'Automatic safety cooling and bearing alignment underway'
+            });
+
+            DOM.modalTitle.textContent = `🚨 Emergency Technician Dispatched — ${ticketId}`;
+            DOM.modalBody.innerHTML = `
+                <div style="font-family: inherit;">
+                    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #EF4444; border-radius: var(--radius-md); padding: 16px; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <span style="font-size: 24px;">🚨</span>
+                            <strong style="color: #EF4444; font-size: 15px;">Safety Interlock Engaged & Master Technician Alerted</strong>
+                        </div>
+                        <p style="font-size: 12.5px; color: var(--text-secondary); margin: 0;">
+                            Emergency Ticket <strong>${ticketId}</strong> has been logged to the central shop-floor dispatch console. Spindle drive has been safely halted to prevent catastrophic motor blowout.
+                        </p>
+                    </div>
+                    <div style="background: var(--bg-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; font-size: 13px;">
+                        <div class="mini-item-row"><span class="mini-item-title">Assigned Hardware</span><span class="mini-item-meta">${m.name} (${m.model}) • Line A</span></div>
+                        <div class="mini-item-row"><span class="mini-item-title">Lead Specialist</span><span class="mini-item-meta">Rajesh Varma (ETA: 4 mins)</span></div>
+                        <div class="mini-item-row"><span class="mini-item-title">Corrective Scope</span><span class="mini-item-meta">Bearing Replacement, Coolant Flush, Calibration</span></div>
+                        <div class="mini-item-row"><span class="mini-item-title">Health Restored</span><span class="mini-item-meta" style="color: #10B981; font-weight: 700;">95% (Post-Service Guaranteed)</span></div>
+                    </div>
+                </div>
+            `;
+
+            DOM.modalActionBtn.textContent = "Acknowledge & Recommission";
+            DOM.modalActionBtn.onclick = () => {
+                closeModal();
+                renderDashboard();
+                showToast("Hardware recommissioned. Machine restored to optimal operational parameters.");
+            };
+            openModal();
+        }
+
+        /* ========================================================================= */
+        /* LIVE CRUD AUDIT & TRANSACTION LOGS ENGINE                                 */
+        /* ========================================================================= */
+        function logAudit(action, entity, user, payload) {
+            const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+            const auditId = `AUD-${Math.floor(1100 + Math.random() * 8900)}`;
+
+            let payloadStr = '';
+            if (typeof payload === 'string') {
+                payloadStr = payload;
+            } else {
+                try {
+                    payloadStr = Object.entries(payload).map(([k, v]) => `${k}=${v}`).join(', ');
+                } catch (e) {
+                    payloadStr = JSON.stringify(payload);
+                }
+            }
+
+            const newLog = {
+                id: auditId,
+                timestamp: timestamp,
+                action: action.toUpperCase(),
+                entity: entity.toUpperCase(),
+                user: user || AppState.currentUser.username,
+                payload: payloadStr,
+                status: "SUCCESS",
+                rawPayload: payload
+            };
+
+            AppState.auditLogs.unshift(newLog);
+
+            if (AppState.auditLogs.length > 100) {
+                AppState.auditLogs.pop();
+            }
+
+            renderAuditLogs();
+
+            try {
+                apiFetch('/audit-logs', {
+                    method: 'POST',
+                    body: JSON.stringify(newLog)
+                }).catch(err => console.debug('[Audit Sync Cached]', err));
+            } catch (e) {}
+        }
+
+        function setAuditFilter(filter) {
+            AppState.auditFilter = filter;
+            renderAuditLogs();
+        }
+
+        function renderAuditLogs() {
+            if (!DOM.auditTableBody) return;
+
+            const totalCount = AppState.auditLogs.length;
+            const insertCount = AppState.auditLogs.filter(l => l.action === 'INSERT').length;
+            const updateCount = AppState.auditLogs.filter(l => l.action === 'UPDATE').length;
+            const deleteCount = AppState.auditLogs.filter(l => l.action === 'DELETE').length;
+
+            if (DOM.countAll) DOM.countAll.textContent = totalCount;
+            if (DOM.countInsert) DOM.countInsert.textContent = insertCount;
+            if (DOM.countUpdate) DOM.countUpdate.textContent = updateCount;
+            if (DOM.countDelete) DOM.countDelete.textContent = deleteCount;
+            if (DOM.auditTotalPill) DOM.auditTotalPill.textContent = `${totalCount} Events`;
+
+            if (DOM.auditFilterButtons) {
+                DOM.auditFilterButtons.forEach(btn => {
+                    const btnFilter = btn.getAttribute('data-action');
+                    if (btnFilter === AppState.auditFilter) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            }
+
+            const filtered = AppState.auditFilter === 'ALL'
+                ? AppState.auditLogs
+                : AppState.auditLogs.filter(l => l.action === AppState.auditFilter);
+
+            if (filtered.length === 0) {
+                DOM.auditTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 24px; color: var(--text-muted); font-size: 13px;">
+                            No audit records found matching filter "${AppState.auditFilter}".
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            DOM.auditTableBody.innerHTML = filtered.map(log => {
+                const actionClass = log.action === 'INSERT' ? 'tag-insert' : (log.action === 'UPDATE' ? 'tag-update' : 'tag-delete');
+                return `
+                    <tr>
+                        <td style="font-family: monospace; font-size: 11.5px; color: var(--text-secondary); white-space: nowrap;">
+                            ${log.timestamp}
+                        </td>
+                        <td>
+                            <span class="audit-tag ${actionClass}">${log.action}</span>
+                        </td>
+                        <td>
+                            <span class="audit-entity-tag">${escapeHtml(log.entity)}</span>
+                        </td>
+                        <td style="font-size: 12px; color: var(--text-primary); font-weight: 500;">
+                            ${escapeHtml(log.user)}
+                        </td>
+                        <td style="font-size: 12px; color: var(--text-secondary); max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${escapeHtml(log.payload)}">
+                            ${escapeHtml(log.payload)}
+                        </td>
+                        <td style="text-align: center; white-space: nowrap;">
+                            <button type="button" class="btn-action-outline" style="font-size: 11px; padding: 3px 8px; margin-right: 4px;" onclick="viewAuditPayload('${log.id}')">View</button>
+                            <button type="button" class="btn-action-outline" style="font-size: 11px; padding: 3px 8px; color: #EF4444; border-color: rgba(239, 68, 68, 0.3);" onclick="deleteAuditLog('${log.id}')">Del</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function viewAuditPayload(auditId) {
+            const log = AppState.auditLogs.find(l => l.id === auditId);
+            if (!log) return;
+
+            DOM.modalTitle.textContent = `Audit Inspection — ${log.id} (${log.action})`;
+            DOM.modalBody.innerHTML = `
+                <div style="font-family: inherit;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                        <div>
+                            <span class="audit-tag ${log.action === 'INSERT' ? 'tag-insert' : (log.action === 'UPDATE' ? 'tag-update' : 'tag-delete')}">${log.action}</span>
+                            <strong style="margin-left: 8px; font-size: 14px;">${escapeHtml(log.entity)}</strong>
+                        </div>
+                        <span style="font-family: monospace; font-size: 12px; color: var(--text-muted);">${log.timestamp}</span>
+                    </div>
+                    <div style="font-size: 12.5px; margin-bottom: 12px;">
+                        <strong>Authenticated Actor:</strong> <span style="color: var(--text-secondary);">${escapeHtml(log.user)}</span>
+                    </div>
+                    <div style="font-size: 12.5px; margin-bottom: 8px;"><strong>Structured Transaction Payload:</strong></div>
+                    <pre style="background: var(--bg-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; font-size: 12px; color: var(--text-primary); overflow-x: auto; font-family: monospace; white-space: pre-wrap;">${escapeHtml(typeof log.rawPayload === 'object' ? JSON.stringify(log.rawPayload, null, 2) : log.payload)}</pre>
+                </div>
+            `;
+
+            DOM.modalActionBtn.textContent = "Close Inspection";
+            DOM.modalActionBtn.onclick = closeModal;
+            openModal();
+        }
+
+        function deleteAuditLog(auditId) {
+            const index = AppState.auditLogs.findIndex(l => l.id === auditId);
+            if (index === -1) return;
+            const removed = AppState.auditLogs.splice(index, 1)[0];
+            renderAuditLogs();
+            showToast(`Audit record ${auditId} deleted from session log buffer.`);
+        }
+
+        function openCreateAuditLogModal() {
+            DOM.modalTitle.textContent = "Simulate Live CRUD Database Transaction";
+            DOM.modalBody.innerHTML = `
+                <div style="font-family: inherit;">
+                    <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px;">
+                        Manually dispatch an INSERT, UPDATE, or DELETE operation to simulate live auditing across database entities.
+                    </p>
+                    <div style="margin-bottom: 12px;">
+                        <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Action Type</label>
+                        <select id="sim-audit-action" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-subtle); color: var(--text-primary);">
+                            <option value="INSERT">INSERT (New Record)</option>
+                            <option value="UPDATE">UPDATE (State / Field Change)</option>
+                            <option value="DELETE">DELETE (Record Purge)</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Entity Name</label>
+                        <input type="text" id="sim-audit-entity" value="WORK_ORDER" placeholder="e.g. INVENTORY_ITEM, SALES_ORDER" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-subtle); color: var(--text-primary);">
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Payload / Transaction Summary</label>
+                        <textarea id="sim-audit-payload" rows="3" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-subtle); color: var(--text-primary);">WO-2026-8812 status updated: produced=184, line=Assembly Line A</textarea>
+                    </div>
+                </div>
+            `;
+
+            DOM.modalActionBtn.textContent = "Commit Transaction";
+            DOM.modalActionBtn.onclick = submitManualAuditLog;
+            openModal();
+        }
+
+        function submitManualAuditLog() {
+            const action = document.getElementById('sim-audit-action').value;
+            const entity = document.getElementById('sim-audit-entity').value.trim() || 'SYSTEM_RECORD';
+            const payload = document.getElementById('sim-audit-payload').value.trim() || 'Manual test transaction';
+
+            logAudit(action, entity, AppState.currentUser.username, payload);
+            closeModal();
+            showToast(`Transaction committed: ${action} on ${entity}`);
+        }
+
+        function exportAuditLogs() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(AppState.auditLogs, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", `industry_os_audit_logs_${new Date().toISOString().substring(0,10)}.json`);
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+            showToast("Audit log JSON exported successfully.");
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
         /* VIEW DISPATCHER WITH LIVE BACKEND DATA SYNC */
         function renderDashboard() {
             const role = AppState.currentUser.role;
@@ -2328,36 +3026,90 @@
             } else {
                 renderEmployeeView(tab);
             }
+
+            // Live CRUD Audit Panel Visibility Gating (Dept Head, CEO, Operator, GM)
+            if (DOM.auditLogSection) {
+                const auditPermittedRoles = ['OPERATOR', 'DEPT_HEAD', 'HEAD_OF_COMPANY', 'GENERAL_MANAGER'];
+                if (auditPermittedRoles.includes(role)) {
+                    DOM.auditLogSection.style.display = 'block';
+                    renderAuditLogs();
+                } else {
+                    DOM.auditLogSection.style.display = 'none';
+                }
+            }
         }
 
         /* 1. OPERATOR VIEWS */
         function renderOperatorView(tab) {
             const m = AppState.operator.machine;
             const tel = AppState.operator.telemetry;
+            const meta = getMachineHealthMetadata(m.healthScore);
 
             DOM.contextRoleTitle.textContent = `Operator Console — ${tab.toUpperCase()}`;
             DOM.contextRoleSubtitle.textContent = `Assigned Hardware: ${m.name} (${m.model}) • Plant: ${m.plant} • Line: ${m.line}`;
 
             DOM.statKpiStrip.innerHTML = `
-                <div class="kpi-card"><div class="kpi-info"><span class="kpi-title">Machine Health</span><span class="kpi-value">${m.healthScore}%</span><span class="kpi-subtext">Status: ${m.status}</span></div><div class="kpi-icon-wrap"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div></div>
+                <div class="kpi-card ${meta.cardClass}"><div class="kpi-info"><span class="kpi-title">Machine Health</span><span class="kpi-value" style="color: ${meta.barColor}; font-weight: 800;">${m.healthScore}%</span><span class="kpi-subtext">Status: ${meta.label}</span></div><div class="kpi-icon-wrap" style="color: ${meta.barColor};"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div></div>
                 <div class="kpi-card"><div class="kpi-info"><span class="kpi-title">Parts Machined Today</span><span class="kpi-value">${tel.totalPartsCut} pcs</span><span class="kpi-subtext">Target: 220 pcs (83.6%)</span></div><div class="kpi-icon-wrap"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div></div>
                 <div class="kpi-card"><div class="kpi-info"><span class="kpi-title">Spindle Thermal Gradient</span><span class="kpi-value">${m.temp}</span><span class="kpi-subtext">Vibration: ${m.vibration}</span></div><div class="kpi-icon-wrap"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg></div></div>
             `;
 
             if (tab === 'overview') {
                 DOM.roleCardsGrid.innerHTML = `
-                    <div class="dashboard-card">
-                        <div class="card-header-line"><div class="card-title-group"><div class="line-art-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div><h3>Assigned Machine Telemetry</h3></div><span class="card-badge badge-success">${m.status}</span></div>
+                    <div class="dashboard-card ${meta.cardClass}">
+                        <div class="card-header-line">
+                            <div class="card-title-group">
+                                <div class="line-art-icon" style="color: ${meta.barColor};">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                                </div>
+                                <h3>Machine Health & Telemetry</h3>
+                            </div>
+                            <span class="card-badge ${meta.badgeClass}">${meta.label}</span>
+                        </div>
                         <div class="card-body-content">
-                            <div class="health-meter-wrap"><div class="meter-header"><span>Overall Efficiency</span><span>${m.healthScore}%</span></div><div class="meter-bar-track"><div class="meter-bar-fill" style="width: ${m.healthScore}%;"></div></div></div>
+                            <div class="health-meter-wrap">
+                                <div class="meter-header">
+                                    <span style="font-weight: 600;">Machine Life / Health %</span>
+                                    <span style="font-weight: 800; color: ${meta.barColor}; font-size: 14px;">${m.healthScore}%</span>
+                                </div>
+                                <div class="meter-bar-track">
+                                    <div class="meter-bar-fill" style="width: ${m.healthScore}%; background: ${meta.barColor};"></div>
+                                </div>
+                            </div>
                             <div class="mini-item-row"><span class="mini-item-title">Model</span><span class="mini-item-meta">${m.model}</span></div>
                             <div class="mini-item-row"><span class="mini-item-title">Spindle RPM</span><span class="mini-item-meta">${tel.rpm} RPM</span></div>
-                            <div class="mini-item-row"><span class="mini-item-title">Coolant Pressure</span><span class="mini-item-meta">${tel.coolantPressure}</span></div>
-                            <p style="font-size: 12px; color: var(--text-muted);">${m.recommendation}</p>
+                            <div class="mini-item-row"><span class="mini-item-title">Spindle Thermal</span><span class="mini-item-meta">${m.temp}</span></div>
+                            <div class="mini-item-row"><span class="mini-item-title">Bearing Vibration</span><span class="mini-item-meta">${m.vibration}</span></div>
+                            
+                            ${meta.isCritical ? `
+                                <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #EF4444; border-radius: var(--radius-sm); padding: 9px 12px; margin: 10px 0; color: #EF4444; font-size: 11.5px; font-weight: 700;">
+                                    ⚠️ EMERGENCY SHUTDOWN REQUIRED: Spindle thermal runaway detected (>70°C). Bearing oscillation exceeds ISO tolerances!
+                                </div>
+                            ` : `
+                                <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">${meta.recommendation}</p>
+                            `}
+
+                            <div style="background: var(--bg-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px 10px; margin-top: 10px; font-size: 11.5px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                    <span style="font-weight: 600; color: var(--text-secondary);">Degradation Engine:</span>
+                                    <span class="card-badge ${m.simulating ? 'badge-success' : 'badge-warning'}" style="font-size: 10px;">${m.simulating ? '● Running (7s)' : '❚❚ Paused'}</span>
+                                </div>
+                                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                    <button type="button" class="btn-action-outline" style="font-size: 11px; padding: 3px 7px;" onclick="triggerWearAndTear(8)">Wear (-8%)</button>
+                                    <button type="button" class="btn-action-outline" style="font-size: 11px; padding: 3px 7px; color: #EF4444; border-color: rgba(239, 68, 68, 0.4);" onclick="triggerCriticalDrop()">Drop (&lt;30%)</button>
+                                    <button type="button" class="btn-action-outline" style="font-size: 11px; padding: 3px 7px; color: #10B981; border-color: rgba(16, 185, 129, 0.4);" onclick="resetMachineHealth()">Overhaul (100%)</button>
+                                    <button type="button" class="btn-action-outline" style="font-size: 11px; padding: 3px 7px;" onclick="toggleHealthSimulation()">${m.simulating ? 'Pause Sim' : 'Resume Sim'}</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-footer-actions">
-                            <button type="button" class="btn-action" onclick="runDiagnostic()">Run Diagnostic</button>
-                            <button type="button" class="btn-action-outline" onclick="requestService()">Request Service</button>
+                            ${meta.isCritical ? `
+                                <button type="button" class="btn-action" style="background: #EF4444; border-color: #EF4444; animation: criticalPulse 1.2s infinite;" onclick="requestTechnicianEmergency()">⚠️ Request Technician (Immediate Shutdown)</button>
+                                <button type="button" class="btn-action-outline" onclick="resetMachineHealth()">Emergency Reset</button>
+                            ` : `
+                                <button type="button" class="btn-action" onclick="runDiagnostic()">Run Diagnostic</button>
+                                <button type="button" class="btn-action-outline" onclick="requestService()">Request Service</button>
+                            `}
                         </div>
                     </div>
 
@@ -3004,6 +3756,13 @@
                 AppState.operator.machine.status = "Optimal";
                 AppState.operator.machine.vibration = "1.1 mm/s (Peak Precision)";
                 AppState.operator.machine.temp = "39.5°C (Ideal)";
+                logAudit('UPDATE', 'MACHINE_DIAGNOSTIC', AppState.currentUser.username, {
+                    machine: AppState.operator.machine.name,
+                    healthScore: 99,
+                    status: 'Optimal',
+                    vibration: '1.1 mm/s',
+                    temp: '39.5°C'
+                });
                 renderDashboard();
                 showToast("Diagnostic Complete: Machine calibrated. All harmonic telemetry normal.");
             }, 1000);
@@ -3020,6 +3779,12 @@
                 desc: "High-precision tolerance inspection requested"
             };
             AppState.operator.maintenanceLogs.unshift(newLog);
+            logAudit('INSERT', 'MAINTENANCE_TICKET', AppState.currentUser.username, {
+                ticketId: ticketId,
+                type: "Corrective Maint",
+                technician: "Ashok Saxena",
+                status: "Dispatched"
+            });
             renderDashboard();
             showToast(`Service Request #${ticketId} dispatched to Mechanical Maintenance Team!`);
         }
@@ -3028,6 +3793,14 @@
             const part = AppState.operator.spareParts.find(p => p.id === partId) || AppState.operator.spareParts[0];
             part.stockQty += 10;
             const poNum = `PO-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+            logAudit('INSERT', 'PURCHASE_ORDER', AppState.currentUser.username, {
+                poNumber: poNum,
+                partId: part.id,
+                partName: part.name,
+                quantity: 10,
+                unitCost: part.unitCost,
+                totalCost: part.unitCost * 10
+            });
             renderDashboard();
             showToast(`Reorder Confirmed! Purchase Order #${poNum} created for 10x ${part.name}.`);
 
@@ -3062,6 +3835,13 @@
             }
             part.used += delta;
             part.stockQty -= delta;
+            logAudit('UPDATE', 'INVENTORY_STOCK', AppState.currentUser.username, {
+                partId: part.id,
+                partName: part.name,
+                change: delta > 0 ? `+${delta}` : `${delta}`,
+                used: part.used,
+                stockRemaining: part.stockQty
+            });
             renderDashboard();
             showToast(`Updated ${part.name}: Used = ${part.used}, Stock Remaining = ${part.stockQty}`);
         }
@@ -3074,6 +3854,12 @@
                 return;
             }
             item.quantity += delta;
+            logAudit('UPDATE', 'CART_ITEM', AppState.currentUser.username, {
+                sku: item.sku,
+                name: item.name,
+                newQuantity: item.quantity,
+                lineTotal: item.quantity * item.unitPrice
+            });
             renderDashboard();
             showToast(`Updated ${item.name} quantity to ${item.quantity}.`);
         }
@@ -3103,6 +3889,15 @@
                 totalAmount: grandTotal,
                 status: "Cleared"
             };
+
+            logAudit('INSERT', 'SALES_ORDER', AppState.currentUser.username, {
+                orderId: soId,
+                invoiceId: invId,
+                customer: c.info.name,
+                totalUnits: c.cartItems.reduce((a,b)=>a+b.quantity, 0),
+                grandTotal: grandTotal,
+                taxTotal: taxTotal
+            });
 
             renderDashboard();
             showToast(`Order #${soId} Confirmed! Dynamic Tax Invoice generated.`);
@@ -3232,6 +4027,12 @@
 
         function logShiftHours() {
             AppState.employee.hoursWorked += 8.0;
+            logAudit('INSERT', 'TIMESHEET_ENTRY', AppState.currentUser.username, {
+                hoursAdded: 8.0,
+                totalHoursWorked: AppState.employee.hoursWorked,
+                workstation: AppState.employee.shift.workstation,
+                status: 'Biometric Pass'
+            });
             renderDashboard();
             showToast("8.0 Shift Hours successfully logged to biometric enterprise timesheet!");
         }
