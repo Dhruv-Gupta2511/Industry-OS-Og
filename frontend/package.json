@@ -4,6 +4,7 @@
   "description": "INDUSTRY-OS Enterprise Operations Platform Frontend",
   "main": "index.html",
   "scripts": {
+    "build": "echo 'Frontend build ready'",
     "start": "npx serve -p 3000 .",
     "dev": "npx serve -p 3000 ."
   },
