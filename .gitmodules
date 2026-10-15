@@ -1,0 +1,3 @@
+[submodule "industry-os"]
+	path = industry-os
+	url = https://github.com/Dhruv-Gupta2511/Industry-OS.git
