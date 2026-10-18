@@ -10,6 +10,15 @@ public class PriceStockUpdateRequest {
 
     public PriceStockUpdateRequest() {}
 
+    public PriceStockUpdateRequest(BigDecimal unitPrice, Integer stockQty, Integer reorderLevel, String status) {
+        this.unitPrice = unitPrice;
+        this.stockQty = stockQty;
+        this.reorderLevel = reorderLevel;
+        this.status = status;
+    }
+
+
+
     public BigDecimal getUnitPrice() { return unitPrice; }
     public void setUnitPrice(BigDecimal unitPrice) { this.unitPrice = unitPrice; }
 

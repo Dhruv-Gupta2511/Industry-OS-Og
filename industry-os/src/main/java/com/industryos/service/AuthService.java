@@ -226,6 +226,7 @@ public class AuthService {
         auditLogRepository.save(auditLog);
 
         String token = tokenProvider.generateToken(savedUser);
+        String tableName = (role == Role.CUSTOMER) ? "customers" : ((role == Role.TRANSPORTER) ? "contractors" : "employees");
 
         return new AuthResponse(
                 token,
@@ -233,7 +234,8 @@ public class AuthService {
                 savedUser.getUsername(),
                 savedUser.getFullName(),
                 savedUser.getRole(),
-                departmentName
+                departmentName,
+                tableName
         );
     }
 }

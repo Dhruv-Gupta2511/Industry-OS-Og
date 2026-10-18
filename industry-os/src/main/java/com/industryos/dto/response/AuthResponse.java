@@ -11,6 +11,7 @@ public class AuthResponse {
     private String fullName;
     private Role role;
     private String department;
+    private String mappedTable;
 
     public AuthResponse() {}
 
@@ -22,6 +23,11 @@ public class AuthResponse {
         this.fullName = fullName;
         this.role = role;
         this.department = department;
+    }
+
+    public AuthResponse(String token, Long userId, String username, String fullName, Role role, String department, String mappedTable) {
+        this(token, userId, username, fullName, role, department);
+        this.mappedTable = mappedTable;
     }
 
     public String getToken() { return token; }
@@ -44,5 +50,8 @@ public class AuthResponse {
 
     public String getDepartment() { return department; }
     public void setDepartment(String department) { this.department = department; }
+
+    public String getMappedTable() { return mappedTable; }
+    public void setMappedTable(String mappedTable) { this.mappedTable = mappedTable; }
 }
 

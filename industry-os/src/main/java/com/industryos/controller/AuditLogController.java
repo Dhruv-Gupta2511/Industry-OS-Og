@@ -34,18 +34,29 @@ public class AuditLogController {
         return ResponseEntity.ok(ApiResponse.ok("Live audit log records retrieved", logs));
     }
 
+    private String safeExtract(Map<String, Object> map, String defaultVal, String... keys) {
+        if (map == null) return defaultVal;
+        for (String k : keys) {
+            Object v = map.get(k);
+            if (v != null && !v.toString().trim().isEmpty()) {
+                return v.toString();
+            }
+        }
+        return defaultVal;
+    }
+
     @PostMapping
     public ResponseEntity<ApiResponse<AuditLog>> createAuditLog(
             Authentication authentication,
-            @RequestBody Map<String, Object> payload) {
-        String actionType = payload.getOrDefault("action", payload.getOrDefault("actionType", "INSERT")).toString();
-        String entityName = payload.getOrDefault("entity", payload.getOrDefault("entityName", "SYSTEM_RECORD")).toString();
-        String username = authentication != null ? authentication.getName() : payload.getOrDefault("user", payload.getOrDefault("username", "system")).toString();
-        String auditId = payload.getOrDefault("id", payload.getOrDefault("auditId", "AUD-" + System.currentTimeMillis() % 10000)).toString();
+            @RequestBody(required = false) Map<String, Object> payload) {
+        String actionType = safeExtract(payload, "INSERT", "action", "actionType");
+        String entityName = safeExtract(payload, "SYSTEM_RECORD", "entity", "entityName");
+        String username = authentication != null ? authentication.getName() : safeExtract(payload, "system", "user", "username");
+        String auditId = safeExtract(payload, "AUD-" + (System.currentTimeMillis() % 100000), "id", "auditId");
 
-        String summary = payload.getOrDefault("payload", payload.getOrDefault("payloadSummary", "")).toString();
-        String prev = payload.getOrDefault("previousValue", payload.getOrDefault("prevValue", "")).toString();
-        String next = payload.getOrDefault("newValue", payload.getOrDefault("nextValue", "")).toString();
+        String summary = safeExtract(payload, "", "payload", "payloadSummary");
+        String prev = safeExtract(payload, "", "previousValue", "prevValue");
+        String next = safeExtract(payload, "", "newValue", "nextValue");
 
         AuditLog log = new AuditLog(auditId, actionType.toUpperCase(), entityName.toUpperCase(), username, summary, prev, next);
         log.setCreatedAt(LocalDateTime.now());
@@ -54,9 +65,14 @@ public class AuditLogController {
         return ResponseEntity.ok(ApiResponse.ok("Audit event recorded to database", saved));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteAuditLog(@PathVariable Long id) {
-        auditLogRepository.deleteById(id);
+    @DeleteMapping("/{idOrAuditId}")
+    public ResponseEntity<ApiResponse<Void>> deleteAuditLog(@PathVariable String idOrAuditId) {
+        try {
+            Long numericId = Long.parseLong(idOrAuditId);
+            auditLogRepository.deleteById(numericId);
+        } catch (NumberFormatException e) {
+            auditLogRepository.findByAuditId(idOrAuditId).ifPresent(auditLogRepository::delete);
+        }
         return ResponseEntity.ok(ApiResponse.ok("Audit record purged", null));
     }
 }
