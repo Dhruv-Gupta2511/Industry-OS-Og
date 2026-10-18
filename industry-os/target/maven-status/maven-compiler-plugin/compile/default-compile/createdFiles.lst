@@ -30,11 +30,13 @@ com\industryos\dto\response\AuthResponse.class
 com\industryos\entity\PurchaseOrderItem.class
 com\industryos\entity\SafetyIncident.class
 com\industryos\entity\Department.class
+com\industryos\repository\AuditLogRepository.class
 com\industryos\service\TransporterService.class
 com\industryos\repository\SafetyIncidentRepository.class
 com\industryos\repository\VehicleRepository.class
 com\industryos\dto\response\CustomerDashboardResponse$DynamicInvoiceDTO.class
 com\industryos\controller\UserController.class
+com\industryos\dto\request\PriceStockUpdateRequest.class
 com\industryos\dto\response\ExecutiveDashboardResponse$CompanyOverviewDTO.class
 com\industryos\repository\PaymentRepository.class
 com\industryos\entity\Role.class
@@ -43,6 +45,8 @@ com\industryos\entity\Invoice.class
 com\industryos\repository\MachineRepository.class
 com\industryos\dto\response\CustomerDashboardResponse.class
 com\industryos\exception\GlobalExceptionHandler.class
+com\industryos\dto\request\RegisterRequest.class
+com\industryos\entity\AuditLog.class
 com\industryos\repository\SalesOrderItemRepository.class
 com\industryos\repository\ShipmentRepository.class
 com\industryos\entity\SparePart.class
@@ -72,6 +76,7 @@ com\industryos\dto\response\ExecutiveDashboardResponse$GlobalFinancialsDTO.class
 com\industryos\dto\response\ExecutiveDashboardResponse$ProductProfitabilityDTO.class
 com\industryos\repository\ProductCategoryRepository.class
 com\industryos\entity\MaintenanceLog.class
+com\industryos\controller\InventoryModificationController.class
 com\industryos\dto\response\UserProfileResponse.class
 com\industryos\dto\response\ExecutiveDashboardResponse.class
 com\industryos\dto\response\OperatorMachineInventoryResponse$MachineDetailDTO.class
@@ -98,6 +103,7 @@ com\industryos\entity\ProductCategory.class
 com\industryos\entity\SalesOrder.class
 com\industryos\entity\Plant.class
 com\industryos\dto\response\CustomerDashboardResponse$CartItemDTO.class
+com\industryos\controller\AuditLogController.class
 com\industryos\entity\Contractor.class
 com\industryos\entity\RawMaterial.class
 com\industryos\dto\response\ExecutiveDashboardResponse$PlantOverviewDTO.class

@@ -1633,6 +1633,14 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label for="signup-email">Official Corporate / Partner Email</label>
+                                <div class="input-with-icon">
+                                    <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                    <input type="email" id="signup-email" placeholder="e.g. v_rao@industry-os.com" required>
+                                </div>
+                            </div>
+
                             <div class="form-row-2col">
                                 <div class="form-group">
                                     <label for="signup-username">Username ID</label>
@@ -1652,31 +1660,33 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="signup-role">Role Classification</label>
+                                <label for="signup-role">User Type / Role Classification</label>
                                 <div class="select-with-icon">
                                     <select id="signup-role" required>
-                                        <option value="OPERATOR">Operator (Machine Assigned)</option>
-                                        <option value="EMPLOYEE">Employee (Assembly / Staff)</option>
-                                        <option value="CUSTOMER">Customer (Retailer / Buyer)</option>
-                                        <option value="TRANSPORTER">Transporter (Logistics Contractor)</option>
-                                        <option value="DEPT_HEAD">Dept Head (Line Operations)</option>
-                                        <option value="HEAD_OF_COMPANY">Head of Company (CEO)</option>
-                                        <option value="GENERAL_MANAGER">General Manager</option>
+                                        <option value="EMPLOYEE">Employee (Plant Staff & Assembly)</option>
+                                        <option value="DEPT_HEAD">Head (Department Head / Line Ops)</option>
+                                        <option value="HEAD_OF_COMPANY">CEO (Chief Executive Officer)</option>
+                                        <option value="GENERAL_MANAGER">General Manager (Plant GM)</option>
+                                        <option value="CUSTOMER">Customer (Enterprise Buyer)</option>
+                                        <option value="RETAILER">Retailer (Commercial Partner)</option>
+                                        <option value="CONTRACTOR">Contractor (Industrial Plant Works)</option>
+                                        <option value="TRANSPORTER">Transporter (Logistics & Fleet Hub)</option>
+                                        <option value="OPERATOR">Operator (Machine & Telemetry)</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="signup-dept">Assigned Project / Department</label>
+                                <label for="signup-dept">Department / Project ID</label>
                                 <div class="select-with-icon">
                                     <select id="signup-dept" required>
-                                        <option value="Production & Precision Machining">Production & Precision Machining</option>
-                                        <option value="Mechanical Maintenance & Tooling">Mechanical Maintenance & Tooling</option>
-                                        <option value="Quality Control & Metrology">Quality Control & Metrology</option>
-                                        <option value="Supply Chain & Dispatch Logistics">Supply Chain & Dispatch Logistics</option>
-                                        <option value="Procurement & Raw Materials">Procurement & Raw Materials</option>
-                                        <option value="Finance & Commercial Accounts">Finance & Commercial Accounts</option>
-                                        <option value="Central Plant Management">Central Plant Management</option>
+                                        <option value="Production & Precision Machining">Production & Precision Machining (Project PRJ-101)</option>
+                                        <option value="Mechanical Maintenance & Tooling">Mechanical Maintenance & Tooling (Project PRJ-102)</option>
+                                        <option value="Quality Control & Metrology">Quality Control & Metrology (Project PRJ-103)</option>
+                                        <option value="Supply Chain & Dispatch Logistics">Supply Chain & Dispatch Logistics (Project PRJ-104)</option>
+                                        <option value="Procurement & Raw Materials">Procurement & Raw Materials (Project PRJ-105)</option>
+                                        <option value="Finance & Commercial Accounts">Finance & Commercial Accounts (Project PRJ-106)</option>
+                                        <option value="Executive Suite & Central Operations">Executive Suite & Central Operations (Project PRJ-107)</option>
                                     </select>
                                 </div>
                             </div>
@@ -1894,9 +1904,9 @@
                             <tr>
                                 <th style="width: 140px;">Timestamp</th>
                                 <th style="width: 100px;">Action Type</th>
-                                <th style="width: 170px;">Entity Name</th>
-                                <th style="width: 180px;">User / Role</th>
-                                <th>Payload Summary</th>
+                                <th style="width: 160px;">Table / Entity</th>
+                                <th style="width: 160px;">User ID / Role</th>
+                                <th>Previous vs. New Value & Payload Summary</th>
                                 <th style="width: 110px; text-align: center;">Audit Action</th>
                             </tr>
                         </thead>
@@ -2032,13 +2042,13 @@
             auditFilter: 'ALL',
 
             auditLogs: [
-                { id: "AUD-1094", timestamp: "2026-10-15 15:12:04", action: "INSERT", entity: "PURCHASE_ORDER", user: "operator1 (Aarti Yadav)", payload: "PO-2026-8819 created for 10x Bearing 6205 (₹4,500)", status: "SUCCESS" },
-                { id: "AUD-1093", timestamp: "2026-10-15 15:08:42", action: "UPDATE", entity: "SPARE_PART", user: "operator1 (Aarti Yadav)", payload: "Bearing 6205 stock decremented: used=4, remaining=36", status: "SUCCESS" },
-                { id: "AUD-1092", timestamp: "2026-10-15 14:55:18", action: "INSERT", entity: "SALES_ORDER", user: "customer1 (Acme Eng)", payload: "SO-2026-9041 confirmed with 3 products (₹3,085,700 incl. 18% GST)", status: "SUCCESS" },
-                { id: "AUD-1091", timestamp: "2026-10-15 14:40:11", action: "UPDATE", entity: "MACHINE_TELEMETRY", user: "operator1 (Aarti Yadav)", payload: "Mazak QT-200 harmonic vibration & thermal diagnostic executed (Health: 94%)", status: "SUCCESS" },
-                { id: "AUD-1090", timestamp: "2026-10-15 14:15:30", action: "INSERT", entity: "TIMESHEET", user: "employee1 (Rajesh S.)", payload: "8.0 Shift Hours logged to biometric timesheet for Workstation #3", status: "SUCCESS" },
-                { id: "AUD-1089", timestamp: "2026-10-15 13:58:02", action: "UPDATE", entity: "FLEET_DISPATCH", user: "transporter1 (SafeGuard)", payload: "Truck RJ14CD5678 speed updated to 64 km/h on NH48 corridor", status: "SUCCESS" },
-                { id: "AUD-1088", timestamp: "2026-10-15 13:20:15", action: "DELETE", entity: "PURCHASE_DRAFT", user: "depthead_prod (Geeta G.)", payload: "Draft PO #DRAFT-881 superseded and purged from staging crib", status: "SUCCESS" }
+                { id: "AUD-1094", timestamp: "2026-10-15 15:12:04", action: "INSERT", entity: "PURCHASE_ORDERS", user: "operator1 (Aarti Yadav)", payload: "PO-2026-8819 created for 10x Bearing 6205 (₹4,500)", previousValue: "PO Status: NONE", newValue: "PO-2026-8819 (10 Units)", status: "SUCCESS" },
+                { id: "AUD-1093", timestamp: "2026-10-15 15:08:42", action: "UPDATE", entity: "SPARE_PARTS", user: "operator1 (Aarti Yadav)", payload: "Bearing 6205 stock decremented: used=4, remaining=36", previousValue: "Stock: 40, Used: 0", newValue: "Stock: 36, Used: 4", status: "SUCCESS" },
+                { id: "AUD-1092", timestamp: "2026-10-15 14:55:18", action: "INSERT", entity: "SALES_ORDERS", user: "customer1 (Acme Eng)", payload: "SO-2026-9041 confirmed with 3 products (₹3,085,700 incl. 18% GST)", previousValue: "Cart Status: OPEN", newValue: "SO-2026-9041 (₹3,085,700)", status: "SUCCESS" },
+                { id: "AUD-1091", timestamp: "2026-10-15 14:40:11", action: "UPDATE", entity: "MACHINE_TELEMETRY", user: "operator1 (Aarti Yadav)", payload: "Mazak QT-200 harmonic vibration & thermal diagnostic executed (Health: 94%)", previousValue: "Health: 88%, Temp: 48°C", newValue: "Health: 94%, Temp: 42°C", status: "SUCCESS" },
+                { id: "AUD-1090", timestamp: "2026-10-15 14:15:30", action: "INSERT", entity: "TIMESHEETS", user: "employee1 (Rajesh S.)", payload: "8.0 Shift Hours logged to biometric timesheet for Workstation #3", previousValue: "Hours Logged: 30.5", newValue: "Hours Logged: 38.5", status: "SUCCESS" },
+                { id: "AUD-1089", timestamp: "2026-10-15 13:58:02", action: "UPDATE", entity: "FLEET_DISPATCH", user: "transporter1 (SafeGuard)", payload: "Truck RJ14CD5678 speed updated to 64 km/h on NH48 corridor", previousValue: "Speed: 0 km/h (Yard)", newValue: "Speed: 64 km/h (NH48)", status: "SUCCESS" },
+                { id: "AUD-1088", timestamp: "2026-10-15 13:20:15", action: "DELETE", entity: "PURCHASE_DRAFTS", user: "depthead_prod (Geeta G.)", payload: "Draft PO #DRAFT-881 superseded and purged from staging crib", previousValue: "Draft PO #DRAFT-881 (Active)", newValue: "Purged (NULL)", status: "SUCCESS" }
             ],
 
             currentUser: {
@@ -2153,6 +2163,7 @@
             togglePasswordBtn: document.getElementById('toggle-password'),
             signupForm: document.getElementById('signup-form'),
             signupFullname: document.getElementById('signup-fullname'),
+            signupEmail: document.getElementById('signup-email'),
             signupUsername: document.getElementById('signup-username'),
             signupPassword: document.getElementById('signup-password'),
             signupRole: document.getElementById('signup-role'),
@@ -2195,6 +2206,7 @@
             initClock();
             initHealthSimulation();
             renderAuditLogs();
+            loadBackendAuditLogs();
         });
 
         /* THEME CONTROLLER */
@@ -2380,25 +2392,41 @@
         async function handleSignup(e) {
             e.preventDefault();
             const fullName = DOM.signupFullname.value.trim();
+            const email = DOM.signupEmail ? DOM.signupEmail.value.trim() : '';
             const username = DOM.signupUsername.value.trim();
             const password = DOM.signupPassword.value;
             const role = DOM.signupRole.value;
             const department = DOM.signupDept.value;
 
-            if (!fullName || !username || !password) {
-                showToast("Please fill in all registration fields.");
+            if (!fullName || !username || !password || !email) {
+                showToast("Please fill in all registration fields, including email.");
                 return;
             }
 
-            AppState.users[username] = { fullName, role, department, password };
+            // Explicit dynamic database table mapping based on User Type / Role
+            let mappedTable = 'employees';
+            let mappedDomain = 'Plant Staff & Operations';
+            if (role === 'CUSTOMER' || role === 'RETAILER') {
+                mappedTable = 'customers';
+                mappedDomain = 'Client & Commercial Accounts';
+            } else if (role === 'TRANSPORTER' || role === 'CONTRACTOR') {
+                mappedTable = 'contractors';
+                mappedDomain = 'Fleet & Logistics Yard';
+            } else {
+                mappedTable = 'employees';
+                mappedDomain = department;
+            }
+
+            const activeRole = role === 'CEO' ? 'HEAD_OF_COMPANY' : role;
+            AppState.users[username] = { fullName, email, role: activeRole, department: mappedDomain, password, table: mappedTable };
             AppState.currentUser.username = username;
             AppState.currentUser.fullName = fullName;
-            AppState.currentUser.role = role;
-            AppState.currentUser.department = department;
-            AppState.sessionToken = generateToken(username, role);
+            AppState.currentUser.role = activeRole;
+            AppState.currentUser.department = mappedDomain;
+            AppState.sessionToken = generateToken(username, activeRole);
             localStorage.setItem('industry_os_token', AppState.sessionToken);
 
-            showToast("Registering user on Render backend (/api/auth/register)...");
+            showToast(`Inserting record into '${mappedTable}' & 'user_account' tables...`);
 
             try {
                 const response = await apiFetch('/auth/register', {
@@ -2407,18 +2435,30 @@
                         fullName,
                         username,
                         password,
-                        role: role === 'HEAD_OF_COMPANY' ? 'CEO' : role,
-                        department
+                        email,
+                        role: role,
+                        userType: role,
+                        department: mappedDomain
                     })
                 });
                 if (response && response.data && response.data.token) {
                     AppState.sessionToken = response.data.token;
                     localStorage.setItem('industry_os_token', response.data.token);
                 }
-                showToast(`Account registered on Render backend! Welcome, ${fullName}.`);
+                showToast(`User '${username}' registered and mapped to '${mappedTable}'! Welcome, ${fullName}.`);
             } catch (err) {
-                showToast(`Account created in offline mode! Welcome, ${fullName}.`);
+                showToast(`Registered in local mode (mapped to table '${mappedTable}')! Welcome, ${fullName}.`);
             }
+
+            // Real-time Database Audit Log Event
+            logAudit(
+                'INSERT',
+                mappedTable.toUpperCase(),
+                username,
+                `User self-registration: ${fullName} (${role}) inserted into '${mappedTable}' table. Email: ${email}, Dept: ${department}`,
+                'None (New Account Registration)',
+                `User ID: ${username}, Table: ${mappedTable}, Role: ${role}, Status: ACTIVE`
+            );
 
             launchAuthenticatedSession();
         }
@@ -2794,7 +2834,7 @@
         /* ========================================================================= */
         /* LIVE CRUD AUDIT & TRANSACTION LOGS ENGINE                                 */
         /* ========================================================================= */
-        function logAudit(action, entity, user, payload) {
+        function logAudit(action, entity, user, payload, previousValue = '', newValue = '') {
             const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
             const auditId = `AUD-${Math.floor(1100 + Math.random() * 8900)}`;
 
@@ -2816,6 +2856,8 @@
                 entity: entity.toUpperCase(),
                 user: user || AppState.currentUser.username,
                 payload: payloadStr,
+                previousValue: String(previousValue || ''),
+                newValue: String(newValue || ''),
                 status: "SUCCESS",
                 rawPayload: payload
             };
@@ -2831,8 +2873,46 @@
             try {
                 apiFetch('/audit-logs', {
                     method: 'POST',
-                    body: JSON.stringify(newLog)
+                    body: JSON.stringify({
+                        auditId: newLog.id,
+                        actionType: newLog.action,
+                        entityName: newLog.entity,
+                        username: newLog.user,
+                        payloadSummary: newLog.payload,
+                        previousValue: newLog.previousValue,
+                        newValue: newLog.newValue
+                    })
                 }).catch(err => console.debug('[Audit Sync Cached]', err));
+            } catch (e) {}
+        }
+
+        async function loadBackendAuditLogs() {
+            try {
+                const res = await apiFetch('/audit-logs');
+                if (res && res.data && Array.isArray(res.data) && res.data.length > 0) {
+                    const backendLogs = res.data.map(item => ({
+                        id: item.auditId || `AUD-${item.id}`,
+                        timestamp: item.createdAt ? item.createdAt.replace('T', ' ').substring(0, 19) : new Date().toISOString().substring(0, 19),
+                        action: (item.actionType || 'UPDATE').toUpperCase(),
+                        entity: (item.entityName || 'GENERAL').toUpperCase(),
+                        user: item.username || 'system',
+                        payload: item.payloadSummary || '',
+                        previousValue: item.previousValue || '',
+                        newValue: item.newValue || '',
+                        status: 'SUCCESS'
+                    }));
+
+                    // Prepend new backend items that aren't already present
+                    const existingIds = new Set(AppState.auditLogs.map(l => l.id));
+                    backendLogs.forEach(blog => {
+                        if (!existingIds.has(blog.id)) {
+                            AppState.auditLogs.unshift(blog);
+                            existingIds.add(blog.id);
+                        }
+                    });
+
+                    renderAuditLogs();
+                }
             } catch (e) {}
         }
 
@@ -2883,9 +2963,10 @@
 
             DOM.auditTableBody.innerHTML = filtered.map(log => {
                 const actionClass = log.action === 'INSERT' ? 'tag-insert' : (log.action === 'UPDATE' ? 'tag-update' : 'tag-delete');
+                const hasPrevNew = Boolean(log.previousValue || log.newValue);
                 return `
                     <tr>
-                        <td style="font-family: monospace; font-size: 11.5px; color: var(--text-secondary); white-space: nowrap;">
+                        <td style="font-family: monospace; font-size: 11px; color: var(--text-secondary); white-space: nowrap;">
                             ${log.timestamp}
                         </td>
                         <td>
@@ -2894,11 +2975,20 @@
                         <td>
                             <span class="audit-entity-tag">${escapeHtml(log.entity)}</span>
                         </td>
-                        <td style="font-size: 12px; color: var(--text-primary); font-weight: 500;">
+                        <td style="font-size: 12px; color: var(--text-primary); font-weight: 600;">
                             ${escapeHtml(log.user)}
                         </td>
-                        <td style="font-size: 12px; color: var(--text-secondary); max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${escapeHtml(log.payload)}">
-                            ${escapeHtml(log.payload)}
+                        <td style="font-size: 12px; color: var(--text-secondary); max-width: 360px;">
+                            ${hasPrevNew ? `
+                                <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; margin-bottom: 3px; font-family: monospace;">
+                                    <span style="color: #EF4444; text-decoration: line-through; background: rgba(239, 68, 68, 0.1); padding: 1px 5px; border-radius: 3px;">Prev: ${escapeHtml(log.previousValue || 'None')}</span>
+                                    <span style="color: var(--text-muted); font-weight: bold;">➔</span>
+                                    <span style="color: #10B981; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 1px 5px; border-radius: 3px;">New: ${escapeHtml(log.newValue || 'Updated')}</span>
+                                </div>
+                            ` : ''}
+                            <div style="font-size: 11.5px; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${escapeHtml(log.payload)}">
+                                ${escapeHtml(log.payload)}
+                            </div>
                         </td>
                         <td style="text-align: center; white-space: nowrap;">
                             <button type="button" class="btn-action-outline" style="font-size: 11px; padding: 3px 8px; margin-right: 4px;" onclick="viewAuditPayload('${log.id}')">View</button>
@@ -2923,10 +3013,24 @@
                         </div>
                         <span style="font-family: monospace; font-size: 12px; color: var(--text-muted);">${log.timestamp}</span>
                     </div>
-                    <div style="font-size: 12.5px; margin-bottom: 12px;">
+                    <div style="font-size: 12.5px; margin-bottom: 10px;">
                         <strong>Authenticated Actor:</strong> <span style="color: var(--text-secondary);">${escapeHtml(log.user)}</span>
                     </div>
-                    <div style="font-size: 12.5px; margin-bottom: 8px;"><strong>Structured Transaction Payload:</strong></div>
+
+                    ${(log.previousValue || log.newValue) ? `
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+                            <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: var(--radius-sm); padding: 10px;">
+                                <div style="font-size: 11px; font-weight: 700; color: #DC2626; text-transform: uppercase; margin-bottom: 4px;">Previous State Value</div>
+                                <div style="font-family: monospace; font-size: 12px; color: var(--text-primary); word-break: break-all;">${escapeHtml(log.previousValue || 'None / New Record')}</div>
+                            </div>
+                            <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-sm); padding: 10px;">
+                                <div style="font-size: 11px; font-weight: 700; color: #059669; text-transform: uppercase; margin-bottom: 4px;">New Mutated Value</div>
+                                <div style="font-family: monospace; font-size: 12px; color: var(--text-primary); font-weight: 600; word-break: break-all;">${escapeHtml(log.newValue || 'Purged / Deleted')}</div>
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <div style="font-size: 12.5px; margin-bottom: 8px;"><strong>Structured Transaction Payload / Summary:</strong></div>
                     <pre style="background: var(--bg-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; font-size: 12px; color: var(--text-primary); overflow-x: auto; font-family: monospace; white-space: pre-wrap;">${escapeHtml(typeof log.rawPayload === 'object' ? JSON.stringify(log.rawPayload, null, 2) : log.payload)}</pre>
                 </div>
             `;
@@ -2936,12 +3040,16 @@
             openModal();
         }
 
-        function deleteAuditLog(auditId) {
+        async function deleteAuditLog(auditId) {
             const index = AppState.auditLogs.findIndex(l => l.id === auditId);
             if (index === -1) return;
-            const removed = AppState.auditLogs.splice(index, 1)[0];
+            AppState.auditLogs.splice(index, 1);
             renderAuditLogs();
-            showToast(`Audit record ${auditId} deleted from session log buffer.`);
+            showToast(`Audit record ${auditId} purged.`);
+
+            try {
+                await apiFetch(`/audit-logs/${auditId}`, { method: 'DELETE' });
+            } catch (e) {}
         }
 
         function openCreateAuditLogModal() {
@@ -2955,17 +3063,27 @@
                         <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Action Type</label>
                         <select id="sim-audit-action" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-subtle); color: var(--text-primary);">
                             <option value="INSERT">INSERT (New Record)</option>
-                            <option value="UPDATE">UPDATE (State / Field Change)</option>
+                            <option value="UPDATE" selected>UPDATE (State / Field Change)</option>
                             <option value="DELETE">DELETE (Record Purge)</option>
                         </select>
                     </div>
                     <div style="margin-bottom: 12px;">
-                        <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Entity Name</label>
-                        <input type="text" id="sim-audit-entity" value="WORK_ORDER" placeholder="e.g. INVENTORY_ITEM, SALES_ORDER" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-subtle); color: var(--text-primary);">
+                        <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Table / Entity Name</label>
+                        <input type="text" id="sim-audit-entity" value="INVENTORY_ITEM" placeholder="e.g. SPARE_PARTS, SALES_ORDERS, WORK_ORDERS" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-subtle); color: var(--text-primary);">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                        <div>
+                            <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Previous Value</label>
+                            <input type="text" id="sim-audit-prev" value="Price: ₹450, Qty: 40" placeholder="Previous State" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-subtle); color: var(--text-primary);">
+                        </div>
+                        <div>
+                            <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">New Value</label>
+                            <input type="text" id="sim-audit-new" value="Price: ₹520, Qty: 36" placeholder="New State" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-subtle); color: var(--text-primary);">
+                        </div>
                     </div>
                     <div style="margin-bottom: 12px;">
                         <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Payload / Transaction Summary</label>
-                        <textarea id="sim-audit-payload" rows="3" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-subtle); color: var(--text-primary);">WO-2026-8812 status updated: produced=184, line=Assembly Line A</textarea>
+                        <textarea id="sim-audit-payload" rows="3" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-subtle); color: var(--text-primary);">Bearing 6205 price revised to ₹520. Valuation recalculated across warehouse.</textarea>
                     </div>
                 </div>
             `;
@@ -2978,9 +3096,11 @@
         function submitManualAuditLog() {
             const action = document.getElementById('sim-audit-action').value;
             const entity = document.getElementById('sim-audit-entity').value.trim() || 'SYSTEM_RECORD';
+            const prevVal = document.getElementById('sim-audit-prev').value.trim();
+            const newVal = document.getElementById('sim-audit-new').value.trim();
             const payload = document.getElementById('sim-audit-payload').value.trim() || 'Manual test transaction';
 
-            logAudit(action, entity, AppState.currentUser.username, payload);
+            logAudit(action, entity, AppState.currentUser.username, payload, prevVal, newVal);
             closeModal();
             showToast(`Transaction committed: ${action} on ${entity}`);
         }
@@ -3108,6 +3228,7 @@
                                 <button type="button" class="btn-action-outline" onclick="resetMachineHealth()">Emergency Reset</button>
                             ` : `
                                 <button type="button" class="btn-action" onclick="runDiagnostic()">Run Diagnostic</button>
+                                <button type="button" class="btn-action-outline" onclick="openEditMachineModal(1)">Change Status</button>
                                 <button type="button" class="btn-action-outline" onclick="requestService()">Request Service</button>
                             `}
                         </div>
@@ -3118,14 +3239,15 @@
                         <div class="card-body-content">
                             ${AppState.operator.spareParts.slice(0, 3).map(part => `
                                 <div class="mini-item-row">
-                                    <div><div class="mini-item-title">${part.name}</div><div class="mini-item-meta">Stock: ${part.stockQty} • Reorder: ${part.reorderLevel}</div></div>
+                                    <div><div class="mini-item-title">${part.name}</div><div class="mini-item-meta">Stock: ${part.stockQty} • Reorder: ${part.reorderLevel} • ₹${part.unitCost}</div></div>
                                     <div class="qty-stepper"><button class="qty-btn" onclick="updatePartUsage(${part.id}, -1)">-</button><span class="qty-val">${part.used}</span><button class="qty-btn" onclick="updatePartUsage(${part.id}, 1)">+</button></div>
                                 </div>
                             `).join('')}
                         </div>
                         <div class="card-footer-actions">
                             <button type="button" class="btn-action" onclick="reorderParts(1)">Reorder Parts</button>
-                            <button type="button" class="btn-action-outline" onclick="switchTab('inventory')">View All Parts</button>
+                            <button type="button" class="btn-action-outline" onclick="openEditPartModal(1)">Edit Price/Stock</button>
+                            <button type="button" class="btn-action-outline" onclick="switchTab('inventory')">View All</button>
                         </div>
                     </div>
 
@@ -3192,6 +3314,7 @@
                         </div>
                         <div class="card-footer-actions">
                             <button type="button" class="btn-action" onclick="reorderParts(${part.id})">Reorder Parts</button>
+                            <button type="button" class="btn-action-outline" onclick="openEditPartModal(${part.id})">Edit Price/Stock</button>
                             <button type="button" class="btn-action-outline" onclick="showToast('Part datasheet downloaded.')">Datasheet</button>
                         </div>
                     </div>
@@ -3255,7 +3378,10 @@
                         <div class="card-body-content">
                             ${c.cartItems.map(item => `
                                 <div class="mini-item-row">
-                                    <div><div class="mini-item-title">${item.name}</div><div class="mini-item-meta">${item.sku} • ₹${item.unitPrice.toLocaleString()}/unit</div></div>
+                                    <div>
+                                        <div class="mini-item-title">${item.name}</div>
+                                        <div class="mini-item-meta">${item.sku} • ₹${item.unitPrice.toLocaleString()}/unit <button type="button" class="btn-action-outline" style="font-size: 10px; padding: 1px 5px; margin-left: 6px;" onclick="openEditProductModal(${item.id})">Edit Price</button></div>
+                                    </div>
                                     <div class="qty-stepper"><button class="qty-btn" onclick="updateCartItemQty(${item.id}, -1)">-</button><span class="qty-val">${item.quantity}</span><button class="qty-btn" onclick="updateCartItemQty(${item.id}, 1)">+</button></div>
                                 </div>
                             `).join('')}
@@ -3787,6 +3913,267 @@
             });
             renderDashboard();
             showToast(`Service Request #${ticketId} dispatched to Mechanical Maintenance Team!`);
+        }
+
+        /* ========================================================================= */
+        /* DYNAMIC PRICE & RECORD MODIFICATION ENGINE                                */
+        /* ========================================================================= */
+        function openEditPartModal(partId) {
+            const part = AppState.operator.spareParts.find(p => p.id === partId) || AppState.operator.spareParts[0];
+            if (!part) return;
+
+            DOM.modalTitle.textContent = `Modify Inventory Record — ${part.name}`;
+            const currentValuation = part.unitCost * part.stockQty;
+            const currentGst = Math.round(currentValuation * 0.18);
+            const currentTotal = currentValuation + currentGst;
+
+            DOM.modalBody.innerHTML = `
+                <div style="font-family: inherit;">
+                    <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px;">
+                        Directly modify unit price, stock quantity, and reorder levels. Changes execute an explicit <code>UPDATE</code> SQL query, recalculate inventory valuation & GST, and log a real-time audit record with previous vs. new values.
+                    </p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div>
+                            <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Unit Price (₹ INR)</label>
+                            <input type="number" id="edit-part-price" value="${part.unitCost}" min="1" step="10" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-subtle); color: var(--text-primary);" oninput="recalcPartModalValuation()">
+                        </div>
+                        <div>
+                            <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Stock Quantity (Units)</label>
+                            <input type="number" id="edit-part-stock" value="${part.stockQty}" min="0" step="1" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-subtle); color: var(--text-primary);" oninput="recalcPartModalValuation()">
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 14px;">
+                        <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Reorder Level Threshold</label>
+                        <input type="number" id="edit-part-reorder" value="${part.reorderLevel}" min="1" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-subtle); color: var(--text-primary);">
+                    </div>
+                    <div style="background: var(--bg-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; font-size: 12.5px;">
+                        <div class="mini-item-row"><span class="mini-item-title">Current Base Valuation:</span><span class="mini-item-meta" id="modal-val-base">₹${currentValuation.toLocaleString()}</span></div>
+                        <div class="mini-item-row"><span class="mini-item-title">Applicable 18% GST:</span><span class="mini-item-meta" id="modal-val-gst">₹${currentGst.toLocaleString()}</span></div>
+                        <div class="mini-item-row"><span class="mini-item-title" style="font-weight: 700;">Grand Total Valuation:</span><span class="mini-item-meta" id="modal-val-total" style="font-weight: 800; color: var(--accent-red);">₹${currentTotal.toLocaleString()}</span></div>
+                    </div>
+                </div>
+            `;
+
+            DOM.modalActionBtn.textContent = "Execute SQL UPDATE";
+            DOM.modalActionBtn.onclick = () => savePartPriceStock(part.id);
+            openModal();
+        }
+
+        function recalcPartModalValuation() {
+            const priceInput = document.getElementById('edit-part-price');
+            const stockInput = document.getElementById('edit-part-stock');
+            if (!priceInput || !stockInput) return;
+            const price = parseFloat(priceInput.value) || 0;
+            const stock = parseInt(stockInput.value) || 0;
+            const base = price * stock;
+            const gst = Math.round(base * 0.18);
+            const total = base + gst;
+
+            const baseEl = document.getElementById('modal-val-base');
+            const gstEl = document.getElementById('modal-val-gst');
+            const totalEl = document.getElementById('modal-val-total');
+            if (baseEl) baseEl.textContent = `₹${base.toLocaleString()}`;
+            if (gstEl) gstEl.textContent = `₹${gst.toLocaleString()}`;
+            if (totalEl) totalEl.textContent = `₹${total.toLocaleString()}`;
+        }
+
+        async function savePartPriceStock(partId) {
+            const part = AppState.operator.spareParts.find(p => p.id === partId);
+            if (!part) return;
+
+            const newPrice = parseFloat(document.getElementById('edit-part-price').value) || part.unitCost;
+            const newStock = parseInt(document.getElementById('edit-part-stock').value) || part.stockQty;
+            const newReorder = parseInt(document.getElementById('edit-part-reorder').value) || part.reorderLevel;
+
+            const oldValuation = part.unitCost * part.stockQty;
+            const newValuation = newPrice * newStock;
+
+            const prevValStr = `Price: ₹${part.unitCost}, Stock: ${part.stockQty}, Valuation: ₹${oldValuation.toLocaleString()}`;
+            const newValStr = `Price: ₹${newPrice}, Stock: ${newStock}, Valuation: ₹${newValuation.toLocaleString()}`;
+
+            part.unitCost = newPrice;
+            part.stockQty = newStock;
+            part.reorderLevel = newReorder;
+
+            closeModal();
+            renderDashboard();
+
+            showToast(`Persisting SQL UPDATE for ${part.name} to database...`);
+
+            // Audit logging
+            logAudit(
+                'UPDATE',
+                'SPARE_PARTS',
+                AppState.currentUser.username,
+                `Inventory modified: ${part.name} price revised to ₹${newPrice.toLocaleString()}, stock updated to ${newStock} units. Total valuation recalculated to ₹${newValuation.toLocaleString()}.`,
+                prevValStr,
+                newValStr
+            );
+
+            // Backend persistence via PUT /api/inventory/spare-parts/{id}
+            try {
+                await apiFetch(`/inventory/spare-parts/${partId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        unitPrice: newPrice,
+                        stockQty: newStock,
+                        reorderLevel: newReorder
+                    })
+                });
+                showToast(`Database updated! ${part.name} valuation now ₹${newValuation.toLocaleString()}.`);
+            } catch (err) {
+                showToast(`Valuation updated locally (offline mode): ₹${newValuation.toLocaleString()}.`);
+            }
+        }
+
+        function openEditProductModal(productId) {
+            const item = AppState.customer.cartItems.find(p => p.id === productId);
+            if (!item) return;
+
+            DOM.modalTitle.textContent = `Modify Catalog Price — ${item.name}`;
+            DOM.modalBody.innerHTML = `
+                <div style="font-family: inherit;">
+                    <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px;">
+                        Modify the unit price for this product. Updates execute an explicit <code>UPDATE</code> SQL query and automatically recalculate cart subtotal, 18% GST, and active invoices.
+                    </p>
+                    <div style="margin-bottom: 12px;">
+                        <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Product SKU & Name</label>
+                        <input type="text" value="${item.sku} • ${item.name}" disabled style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-subtle); color: var(--text-muted);">
+                    </div>
+                    <div style="margin-bottom: 14px;">
+                        <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Unit Price (₹ INR)</label>
+                        <input type="number" id="edit-prod-price" value="${item.unitPrice}" min="100" step="100" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-subtle); color: var(--text-primary);">
+                    </div>
+                    <div style="background: var(--bg-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; font-size: 12.5px;">
+                        <div class="mini-item-row"><span class="mini-item-title">Current Unit Price</span><span class="mini-item-meta">₹${item.unitPrice.toLocaleString()}</span></div>
+                        <div class="mini-item-row"><span class="mini-item-title">Cart Quantity Ordered</span><span class="mini-item-meta">${item.quantity} units</span></div>
+                        <div class="mini-item-row"><span class="mini-item-title">Line Total (Excl. Tax)</span><span class="mini-item-meta">₹${(item.unitPrice * item.quantity).toLocaleString()}</span></div>
+                    </div>
+                </div>
+            `;
+
+            DOM.modalActionBtn.textContent = "Execute Price UPDATE";
+            DOM.modalActionBtn.onclick = () => saveProductPrice(productId);
+            openModal();
+        }
+
+        async function saveProductPrice(productId) {
+            const item = AppState.customer.cartItems.find(p => p.id === productId);
+            if (!item) return;
+
+            const newPrice = parseFloat(document.getElementById('edit-prod-price').value) || item.unitPrice;
+            const oldPrice = item.unitPrice;
+            const prevValStr = `Price: ₹${oldPrice.toLocaleString()}`;
+            const newValStr = `Price: ₹${newPrice.toLocaleString()}`;
+
+            item.unitPrice = newPrice;
+
+            // Recalculate customer cart totals & invoices
+            const cartTotal = AppState.customer.cartItems.reduce((acc, it) => acc + (it.unitPrice * it.quantity), 0);
+            const taxTotal = Math.round(cartTotal * 0.18);
+            const grandTotal = cartTotal + taxTotal;
+
+            if (AppState.customer.invoice) {
+                AppState.customer.invoice.amount = cartTotal;
+                AppState.customer.invoice.taxAmount = taxTotal;
+                AppState.customer.invoice.totalAmount = grandTotal;
+            }
+
+            closeModal();
+            renderDashboard();
+
+            showToast(`Persisting product price update to database...`);
+
+            // Audit logging
+            logAudit(
+                'UPDATE',
+                'PRODUCT_CATALOG',
+                AppState.currentUser.username,
+                `Product ${item.name} (${item.sku}) price revised to ₹${newPrice.toLocaleString()} (was ₹${oldPrice.toLocaleString()}). Cart subtotal and 18% GST recalculation applied: ₹${grandTotal.toLocaleString()}.`,
+                prevValStr,
+                newValStr
+            );
+
+            // Backend persistence via PUT /api/inventory/products/{id}
+            try {
+                await apiFetch(`/inventory/products/${productId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        unitPrice: newPrice
+                    })
+                });
+                showToast(`Product price updated in cloud database!`);
+            } catch (err) {
+                showToast(`Product price updated locally!`);
+            }
+        }
+
+        function openEditMachineModal(machineId) {
+            const m = AppState.operator.machine;
+            DOM.modalTitle.textContent = `Modify Machine Status — ${m.name} (${m.model})`;
+            DOM.modalBody.innerHTML = `
+                <div style="font-family: inherit;">
+                    <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px;">
+                        Authorize and execute a machine operational status transition. Persists directly via SQL <code>UPDATE</code> to the <code>machine</code> table and logs to the audit ledger.
+                    </p>
+                    <div style="margin-bottom: 14px;">
+                        <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">Operational Status</label>
+                        <select id="edit-machine-status" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-subtle); color: var(--text-primary);">
+                            <option value="Operational" ${m.status === 'Operational' ? 'selected' : ''}>Operational (Full Production)</option>
+                            <option value="Degraded Operation" ${m.status === 'Degraded Operation' ? 'selected' : ''}>Degraded Operation (Warning Level)</option>
+                            <option value="Under Calibration" ${m.status === 'Under Calibration' ? 'selected' : ''}>Under Calibration (Tooling Check)</option>
+                            <option value="CRITICAL SHUTDOWN" ${m.status === 'CRITICAL SHUTDOWN' ? 'selected' : ''}>CRITICAL SHUTDOWN (Emergency E-Stop)</option>
+                        </select>
+                    </div>
+                    <div style="background: var(--bg-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; font-size: 12.5px;">
+                        <div class="mini-item-row"><span class="mini-item-title">Current Machine Health</span><span class="mini-item-meta">${m.healthScore}%</span></div>
+                        <div class="mini-item-row"><span class="mini-item-title">Assigned Line</span><span class="mini-item-meta">${m.line} (${m.plant})</span></div>
+                    </div>
+                </div>
+            `;
+
+            DOM.modalActionBtn.textContent = "Execute Status UPDATE";
+            DOM.modalActionBtn.onclick = () => saveMachineStatus(machineId);
+            openModal();
+        }
+
+        async function saveMachineStatus(machineId) {
+            const m = AppState.operator.machine;
+            const newStatus = document.getElementById('edit-machine-status').value;
+            const oldStatus = m.status;
+
+            m.status = newStatus;
+            if (newStatus === 'Operational') {
+                m.healthScore = Math.max(90, m.healthScore);
+                applyMachineDegradationTelemetry(m);
+            } else if (newStatus === 'CRITICAL SHUTDOWN') {
+                m.healthScore = 20;
+                applyMachineDegradationTelemetry(m);
+            }
+
+            closeModal();
+            renderDashboard();
+
+            logAudit(
+                'UPDATE',
+                'MACHINE_HARDWARE',
+                AppState.currentUser.username,
+                `Machine ${m.name} (${m.model}) operational status modified to '${newStatus}'`,
+                `Status: ${oldStatus}`,
+                `Status: ${newStatus}`
+            );
+
+            try {
+                await apiFetch(`/inventory/machines/${machineId}/status`, {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        status: newStatus
+                    })
+                });
+                showToast(`Machine hardware status updated in database!`);
+            } catch (err) {
+                showToast(`Machine hardware status updated locally!`);
+            }
         }
 
         async function reorderParts(partId) {

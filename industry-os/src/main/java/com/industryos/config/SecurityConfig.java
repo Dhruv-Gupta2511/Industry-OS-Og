@@ -81,6 +81,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/transporter/**").hasAnyRole("TRANSPORTER", "CEO", "GENERAL_MANAGER")
                         .requestMatchers("/api/depthead/**").hasAnyRole("DEPT_HEAD", "CEO", "GENERAL_MANAGER")
                         .requestMatchers("/api/executive/**").hasAnyRole("CEO", "GENERAL_MANAGER")
+                        .requestMatchers("/api/audit-logs/**").hasAnyRole("DEPT_HEAD", "CEO", "GENERAL_MANAGER", "OPERATOR")
+                        .requestMatchers("/api/inventory/**").authenticated()
                         .anyRequest().authenticated()
                 );
 

@@ -1,6 +1,7 @@
 package com.industryos.controller;
 
 import com.industryos.dto.request.LoginRequest;
+import com.industryos.dto.request.RegisterRequest;
 import com.industryos.dto.response.ApiResponse;
 import com.industryos.dto.response.AuthResponse;
 import com.industryos.service.AuthService;
@@ -23,5 +24,10 @@ public class AuthController {
         AuthResponse authResponse = authService.login(request);
         return ResponseEntity.ok(ApiResponse.ok("Login successful", authResponse));
     }
-}
 
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse<AuthResponse>> register(@Valid @RequestBody RegisterRequest request) {
+        AuthResponse authResponse = authService.register(request);
+        return ResponseEntity.ok(ApiResponse.ok("User registered successfully and mapped to domain entity", authResponse));
+    }
+}

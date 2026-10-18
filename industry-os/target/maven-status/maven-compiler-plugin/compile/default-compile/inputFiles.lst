@@ -3,14 +3,18 @@ A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\config\JwtAuthenticationFilter.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\config\JwtTokenProvider.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\config\SecurityConfig.java
+A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\controller\AuditLogController.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\controller\AuthController.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\controller\CustomerController.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\controller\DeptHeadController.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\controller\ExecutiveController.java
+A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\controller\InventoryModificationController.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\controller\OperatorController.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\controller\TransporterController.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\controller\UserController.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\dto\request\LoginRequest.java
+A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\dto\request\PriceStockUpdateRequest.java
+A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\dto\request\RegisterRequest.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\dto\response\ApiResponse.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\dto\response\AuthResponse.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\dto\response\CustomerDashboardResponse.java
@@ -19,6 +23,7 @@ A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\dto\response\OperatorMachineInventoryResponse.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\dto\response\TransporterDashboardResponse.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\dto\response\UserProfileResponse.java
+A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\entity\AuditLog.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\entity\Contractor.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\entity\Customer.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\entity\Department.java
@@ -56,6 +61,7 @@ A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\exception\ResourceNotFoundException.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\exception\UnauthorizedException.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\IndustryOsApplication.java
+A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\repository\AuditLogRepository.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\repository\ContractorRepository.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\repository\CustomerRepository.java
 A:\Dhruv\User\Documents\INDUSTRY MANAGEMENT SYSTEM\industry-os\src\main\java\com\industryos\repository\DepartmentRepository.java
