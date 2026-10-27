@@ -69,3 +69,4 @@ if os.path.exists(dh_path):
     print("DeptHeadService.java updated with null-safe batch quantity summation.")
 
 print("All null-safety hotfixes applied.")
+

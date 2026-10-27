@@ -36,4 +36,11 @@ public class UserController {
         userService.deleteUserAccount(username);
         return ResponseEntity.ok(ApiResponse.ok("User account '" + username + "' deleted successfully from the database", null));
     }
+
+    @DeleteMapping("/id/{id}")
+    @PreAuthorize("hasAnyRole('CEO', 'GENERAL_MANAGER')")
+    public ResponseEntity<ApiResponse<Void>> deleteUserAccountById(@PathVariable Long id) {
+        userService.deleteUserAccount(id);
+        return ResponseEntity.ok(ApiResponse.ok("User account ID '" + id + "' deleted successfully from the database", null));
+    }
 }

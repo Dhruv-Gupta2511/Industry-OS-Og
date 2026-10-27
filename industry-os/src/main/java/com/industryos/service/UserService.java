@@ -87,11 +87,41 @@ public class UserService {
         return profile;
     }
 
+    public UserAccount findById(Long id) {
+        if (id == null) {
+            throw new ResourceNotFoundException("User account ID cannot be null");
+        }
+        return userAccountRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User account not found with ID: " + id));
+    }
+
+    public UserAccount findById(Integer id) {
+        if (id == null) {
+            throw new ResourceNotFoundException("User account ID cannot be null");
+        }
+        return findById(Long.valueOf(id));
+    }
+
+    @Transactional
+    public void deleteUserAccount(Long id) {
+        if (id == null) return;
+        UserAccount user = userAccountRepository.findById(Long.valueOf(id))
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
+        deleteUserAccount(user.getUsername());
+    }
+
+    @Transactional
+    public void deleteUserAccount(Integer id) {
+        if (id != null) {
+            deleteUserAccount(Long.valueOf(id));
+        }
+    }
+
     @Transactional
     public void deleteUserAccount(String identifier) {
         UserAccount user = null;
         try {
-            Long id = Long.parseLong(identifier);
+            Long id = Long.valueOf(identifier);
             user = userAccountRepository.findById(id).orElse(null);
         } catch (NumberFormatException ignored) {}
 
