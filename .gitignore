@@ -1,0 +1,16 @@
+# ==========================================
+# Local Academic Reports & Private Documents
+# ==========================================
+*.docx
+*.pdf
+
+# Temporary generation scripts, images, and scratchpad
+scratch/
+
+# Runtime and local log files
+server.log
+server_err.log
+
+# OS & Editor temp files
+.DS_Store
+Thumbs.db
