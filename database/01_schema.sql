@@ -494,3 +494,12 @@ CREATE INDEX idx_user_username ON user_account(username);
 CREATE INDEX idx_user_role     ON user_account(role);
 CREATE INDEX idx_audit_created ON audit_log(created_at);
 CREATE INDEX idx_audit_action  ON audit_log(action_type);
+
+-- Compatibility Views for direct 'users' and 'orders' queries
+CREATE OR REPLACE VIEW users AS 
+SELECT id, username, password, role, full_name, email, department_id, employee_id, customer_id, contractor_id, assigned_machine_id, enabled, created_at 
+FROM user_account;
+
+CREATE OR REPLACE VIEW orders AS 
+SELECT so_id AS order_id, customer_id, order_date, delivery_date, status, total_amount, created_at 
+FROM sales_order;

@@ -336,3 +336,27 @@ SELECT action_type, entity_name, username, payload_summary, previous_value, new_
 FROM audit_log
 ORDER BY id DESC
 LIMIT 20;
+
+
+-- =========================================================================
+-- SECTION 7: PARAMETERIZED CRUD STATEMENTS (PREPARED STATEMENTS WITH ?)
+-- =========================================================================
+
+-- Q31. Parameterized User Registration Query
+-- INSERT INTO user_account (username, password, role, full_name, email, department_id, customer_id, employee_id, contractor_id, enabled) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+-- INSERT INTO customer (customer_name, contact_person, email, phone, city, state, credit_limit, gstin) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+-- INSERT INTO employee (first_name, last_name, gender, dob, hire_date, email, phone, dept_id, desig_id, plant_id, shift_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+-- INSERT INTO contractor (company_name, service_type, phone, plant_id, contract_start, contract_end, contract_value) VALUES (?, ?, ?, ?, ?, ?, ?);
+
+-- Q32. Parameterized Delete User Account Query
+-- DELETE FROM user_account WHERE id = ?;
+-- DELETE FROM user_account WHERE username = ?;
+-- DELETE FROM users WHERE id = ?;
+
+-- Q33. Parameterized Delete Order Query (with cascading cleanup)
+-- DELETE FROM payment WHERE invoice_id IN (SELECT invoice_id FROM invoice WHERE so_id = ?);
+-- DELETE FROM invoice WHERE so_id = ?;
+-- DELETE FROM shipment WHERE so_id = ?;
+-- DELETE FROM sales_order_item WHERE so_id = ?;
+-- DELETE FROM sales_order WHERE so_id = ?;
+-- DELETE FROM orders WHERE order_id = ?;

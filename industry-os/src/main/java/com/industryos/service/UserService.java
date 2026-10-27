@@ -88,9 +88,17 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUserAccount(String username) {
-        UserAccount user = userAccountRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
+    public void deleteUserAccount(String identifier) {
+        UserAccount user = null;
+        try {
+            Integer id = Integer.parseInt(identifier);
+            user = userAccountRepository.findById(id).orElse(null);
+        } catch (NumberFormatException ignored) {}
+
+        if (user == null) {
+            user = userAccountRepository.findByUsername(identifier)
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found: " + identifier));
+        }
 
         String prevVal = "User ID: " + user.getId() + ", Username: " + user.getUsername() + ", Role: " + user.getRole() + ", FullName: " + user.getFullName();
 
@@ -100,7 +108,7 @@ public class UserService {
                 auditId,
                 "DELETE",
                 "USER_ACCOUNT",
-                username,
+                user.getUsername(),
                 "Permanently deleted user account '" + user.getUsername() + "' (" + user.getRole() + ")",
                 prevVal,
                 "ACCOUNT_DELETED"
