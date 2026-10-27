@@ -9,6 +9,8 @@ echo.
 set JAVA_CMD=java
 if exist "C:\Program Files\Java\latest\jdk-27\bin\java.exe" (
     set "JAVA_CMD=C:\Program Files\Java\latest\jdk-27\bin\java.exe"
+) else if exist "C:\Program Files\Java\latest\jdk-25\bin\java.exe" (
+    set "JAVA_CMD=C:\Program Files\Java\latest\jdk-25\bin\java.exe"
 )
 
 echo Opening browser at http://localhost:8080/ ...
@@ -24,4 +26,3 @@ if %ERRORLEVEL% NEQ 0 (
     start "" "%~dp0industry-os-app.html"
 )
 pause
-

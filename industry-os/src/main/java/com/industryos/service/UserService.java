@@ -5,6 +5,7 @@ import com.industryos.entity.*;
 import com.industryos.exception.ResourceNotFoundException;
 import com.industryos.repository.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
@@ -15,19 +16,22 @@ public class UserService {
     private final DesignationRepository designationRepository;
     private final PlantRepository plantRepository;
     private final MachineRepository machineRepository;
+    private final AuditLogRepository auditLogRepository;
 
     public UserService(UserAccountRepository userAccountRepository,
                        DepartmentRepository departmentRepository,
                        EmployeeRepository employeeRepository,
                        DesignationRepository designationRepository,
                        PlantRepository plantRepository,
-                       MachineRepository machineRepository) {
+                       MachineRepository machineRepository,
+                       AuditLogRepository auditLogRepository) {
         this.userAccountRepository = userAccountRepository;
         this.departmentRepository = departmentRepository;
         this.employeeRepository = employeeRepository;
         this.designationRepository = designationRepository;
         this.plantRepository = plantRepository;
         this.machineRepository = machineRepository;
+        this.auditLogRepository = auditLogRepository;
     }
 
     public UserProfileResponse getCurrentUserProfile(String username) {
@@ -82,5 +86,27 @@ public class UserService {
 
         return profile;
     }
-}
 
+    @Transactional
+    public void deleteUserAccount(String username) {
+        UserAccount user = userAccountRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
+
+        String prevVal = "User ID: " + user.getId() + ", Username: " + user.getUsername() + ", Role: " + user.getRole() + ", FullName: " + user.getFullName();
+
+        // Audit Log Entry
+        String auditId = "AUD-" + (System.currentTimeMillis() % 100000);
+        AuditLog auditLog = new AuditLog(
+                auditId,
+                "DELETE",
+                "USER_ACCOUNT",
+                username,
+                "Permanently deleted user account '" + user.getUsername() + "' (" + user.getRole() + ")",
+                prevVal,
+                "ACCOUNT_DELETED"
+        );
+        auditLogRepository.save(auditLog);
+
+        userAccountRepository.delete(user);
+    }
+}

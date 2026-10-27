@@ -293,3 +293,46 @@ SELECT * FROM v_product_margin ORDER BY margin_pct DESC;
 --   CALL sp_receive_purchase_order(<placed_po_id>, 1);
 -- Run October payroll:
 --   CALL sp_run_payroll('2026-10');
+
+-- =============================================================================
+-- SECTION 6 : USER LIFECYCLE & TRANSACTIONAL DELETIONS (CRUD & AUDITING)
+-- =============================================================================
+
+-- 26. Register new user and verify relational foreign key linkage
+-- A. Register customer
+INSERT INTO customer (customer_name, contact_person, email, phone, city, state, credit_limit, gstin)
+VALUES ('Omkar Precision Tooling Ltd', 'Omkar Patil', 'omkar@precision.in', '+91 9811224455', 'Pune', 'Maharashtra', 2000000.00, '27AABB1234D1Z2');
+
+INSERT INTO user_account (username, password, role, full_name, email, department_id, customer_id, enabled)
+VALUES ('omkar_cust', 'Password@123', 'CUSTOMER', 'Omkar Patil', 'omkar@precision.in', 1, LAST_INSERT_ID(), TRUE);
+
+-- B. Verify joined user profile
+SELECT u.id, u.username, u.role, u.full_name, c.customer_name, c.city, c.credit_limit
+FROM user_account u
+JOIN customer c ON c.customer_id = u.customer_id
+WHERE u.username = 'omkar_cust';
+
+-- 27. Safely delete user account and verify audit trail
+DELETE FROM user_account WHERE username = 'omkar_cust';
+
+INSERT INTO audit_log (audit_id, action_type, entity_name, username, payload_summary, previous_value, new_value)
+VALUES ('AUD-DEL-USR-01', 'DELETE', 'USER_ACCOUNT', 'admin', 'Deleted user account omkar_cust', 'User ID exists', 'DELETED');
+
+SELECT * FROM audit_log WHERE entity_name = 'USER_ACCOUNT' ORDER BY id DESC LIMIT 5;
+
+-- 28. Safely delete a sales order and verify clean-up of associated items
+-- Find an order to delete:
+-- SELECT so_id, customer_id, total_amount, status FROM sales_order ORDER BY so_id DESC LIMIT 1;
+-- Perform deletion (or call sp_delete_sales_order):
+DELETE FROM sales_order WHERE so_id = 26;
+
+INSERT INTO audit_log (audit_id, action_type, entity_name, username, payload_summary, previous_value, new_value)
+VALUES ('AUD-DEL-SO-01', 'DELETE', 'SALES_ORDER', 'ceo', 'Deleted Sales Order #26 and associated line items', 'Order Total: ₹3210000.00', 'DELETED');
+
+SELECT count(*) AS remaining_order_items FROM sales_order_item WHERE so_id = 26;
+
+-- 29. Full Audit Log Inspection: Review all INSERT, UPDATE, DELETE actions
+SELECT action_type, entity_name, username, payload_summary, previous_value, new_value, created_at
+FROM audit_log
+ORDER BY id DESC
+LIMIT 20;

@@ -1,4 +1,4 @@
-USE industrial_mgmt;
+﻿USE industrial_mgmt;
 
 DELIMITER $$
 
@@ -263,9 +263,117 @@ BEGIN
     COMMIT;
 END$$
 
+-- P7: Dynamically register user and map to domain tables (CUSTOMER, EMPLOYEE, TRANSPORTER)
+CREATE PROCEDURE sp_register_user(
+    IN p_username    VARCHAR(60),
+    IN p_password    VARCHAR(255),
+    IN p_role        VARCHAR(30),
+    IN p_full_name   VARCHAR(100),
+    IN p_email       VARCHAR(100),
+    IN p_department  VARCHAR(60)
+)
+BEGIN
+    DECLARE v_dept_id INT DEFAULT 1;
+    DECLARE v_emp_id INT DEFAULT NULL;
+    DECLARE v_cust_id INT DEFAULT NULL;
+    DECLARE v_contractor_id INT DEFAULT NULL;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION BEGIN ROLLBACK; RESIGNAL; END;
+
+    START TRANSACTION;
+        IF p_role = 'CUSTOMER' THEN
+            INSERT INTO customer (customer_name, contact_person, email, phone, city, state, credit_limit, gstin)
+            VALUES (p_full_name, p_full_name, p_email, '+91 9876543210', 'Pune', 'Maharashtra', 2500000.00, CONCAT('27AAB', FLOOR(1000 + (RAND() * 9000)), 'C1Z1'));
+            SET v_cust_id = LAST_INSERT_ID();
+        ELSEIF p_role = 'TRANSPORTER' THEN
+            INSERT INTO contractor (company_name, service_type, phone, plant_id, contract_start, contract_end, contract_value)
+            VALUES (p_full_name, 'Heavy Freight Logistics & Transport', '+91 9811223344', 1, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 2 YEAR), 5000000.00);
+            SET v_contractor_id = LAST_INSERT_ID();
+        ELSE
+            INSERT INTO employee (first_name, last_name, gender, dob, hire_date, email, phone, dept_id, desig_id, plant_id, shift_id, status)
+            VALUES (SUBSTRING_INDEX(p_full_name, ' ', 1), 
+                    IF(LOCATE(' ', p_full_name) > 0, SUBSTRING(p_full_name, LOCATE(' ', p_full_name) + 1), 'Staff'),
+                    'M', '1992-05-14', CURDATE(), p_email, '+91 9822001122', v_dept_id, 3, 1, 1, 'Active');
+            SET v_emp_id = LAST_INSERT_ID();
+        END IF;
+
+        INSERT INTO user_account (username, password, role, full_name, email, department_id, employee_id, customer_id, contractor_id, enabled)
+        VALUES (p_username, p_password, p_role, p_full_name, p_email, v_dept_id, v_emp_id, v_cust_id, v_contractor_id, TRUE);
+
+        INSERT INTO audit_log (audit_id, action_type, entity_name, username, payload_summary, previous_value, new_value)
+        VALUES (CONCAT('AUD-', FLOOR(10000 + RAND() * 90000)), 'INSERT', 'USER_REGISTRATION', p_username,
+                CONCAT('Registered new user: ', p_full_name, ' (', p_role, ') mapped to relational tables'), 'None', CONCAT('Role: ', p_role, ', Email: ', p_email));
+    COMMIT;
+END
+
+-- P8: Safely delete user account and audit event
+CREATE PROCEDURE sp_delete_user_account(IN p_username VARCHAR(60))
+BEGIN
+    DECLARE v_id INT;
+    DECLARE v_role VARCHAR(30);
+    DECLARE v_fullname VARCHAR(100);
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION BEGIN ROLLBACK; RESIGNAL; END;
+
+    SELECT id, role, full_name INTO v_id, v_role, v_fullname 
+    FROM user_account WHERE username = p_username;
+
+    IF v_id IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'User account not found';
+    END IF;
+
+    START TRANSACTION;
+        DELETE FROM user_account WHERE id = v_id;
+
+        INSERT INTO audit_log (audit_id, action_type, entity_name, username, payload_summary, previous_value, new_value)
+        VALUES (CONCAT('AUD-', FLOOR(10000 + RAND() * 90000)), 'DELETE', 'USER_ACCOUNT', p_username,
+                CONCAT('User account permanently deleted: ', p_username, ' (', v_role, ')'),
+                CONCAT('User ID: ', v_id, ', Name: ', v_fullname), 'ACCOUNT_DELETED');
+    COMMIT;
+END
+
+-- P9: Safely delete sales order, cascade line items & payments, and log audit
+CREATE PROCEDURE sp_delete_sales_order(IN p_so_id INT, IN p_actor VARCHAR(60))
+BEGIN
+    DECLARE v_total DECIMAL(14,2);
+    DECLARE v_status VARCHAR(20);
+    DECLARE v_inv_id INT;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION BEGIN ROLLBACK; RESIGNAL; END;
+
+    SELECT total_amount, status INTO v_total, v_status FROM sales_order WHERE so_id = p_so_id;
+    IF v_total IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Sales order not found';
+    END IF;
+
+    START TRANSACTION;
+        -- Delete dependent payments & invoice
+        SELECT invoice_id INTO v_inv_id FROM invoice WHERE so_id = p_so_id;
+        IF v_inv_id IS NOT NULL THEN
+            DELETE FROM payment WHERE invoice_id = v_inv_id;
+            DELETE FROM invoice WHERE invoice_id = v_inv_id;
+        END IF;
+
+        -- Delete shipment
+        DELETE FROM shipment WHERE so_id = p_so_id;
+
+        -- Delete order items
+        DELETE FROM sales_order_item WHERE so_id = p_so_id;
+
+        -- Delete sales order
+        DELETE FROM sales_order WHERE so_id = p_so_id;
+
+        -- Audit record
+        INSERT INTO audit_log (audit_id, action_type, entity_name, username, payload_summary, previous_value, new_value)
+        VALUES (CONCAT('AUD-', FLOOR(10000 + RAND() * 90000)), 'DELETE', 'SALES_ORDER', COALESCE(p_actor, 'system'),
+                CONCAT('Deleted Sales Order #', p_so_id, ' with all line items, payments & invoices'),
+                CONCAT('SO ID: ', p_so_id, ', Total: ₹', v_total, ', Status: ', v_status), 'ORDER_DELETED');
+    COMMIT;
+END
+
 DELIMITER ;
 
 -- DEMO CALLS (uncomment to try)
+-- CALL sp_register_user('buyer_new', 'password123', 'CUSTOMER', 'Rohan Enterprises', 'rohan@enterprise.in', 'Sales');
+-- CALL sp_delete_user_account('buyer_new');
+-- CALL sp_delete_sales_order(1, 'ceo');
 -- CALL sp_material_requirement(11);
 -- CALL sp_run_payroll('2026-10');
 -- CALL sp_transfer_stock(1, 2, 1, 100);

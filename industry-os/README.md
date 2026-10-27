@@ -6,7 +6,7 @@ A high-performance, production-ready Java Spring Boot RESTful API backend for **
 
 ## 🛠 Tech Stack & Architecture
 
-- **Language / Runtime:** Java 17+ (Java 27 runtime verified)
+- **Language / Runtime:** Java 25 LTS
 - **Framework:** Spring Boot 3.3.4 (Spring Web, Spring Security 6, Spring Data JPA, Bean Validation)
 - **Security:** Stateless JWT authentication (JJWT 0.12.6) with HMAC-SHA256 and BCrypt password encryption
 - **Databases Supported:**

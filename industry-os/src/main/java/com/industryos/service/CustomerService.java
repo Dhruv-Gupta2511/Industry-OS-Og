@@ -6,6 +6,7 @@ import com.industryos.entity.*;
 import com.industryos.exception.ResourceNotFoundException;
 import com.industryos.repository.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -23,6 +24,7 @@ public class CustomerService {
     private final InvoiceRepository invoiceRepository;
     private final PaymentRepository paymentRepository;
     private final ShipmentRepository shipmentRepository;
+    private final AuditLogRepository auditLogRepository;
 
     public CustomerService(UserAccountRepository userAccountRepository,
                            CustomerRepository customerRepository,
@@ -31,7 +33,8 @@ public class CustomerService {
                            ProductRepository productRepository,
                            InvoiceRepository invoiceRepository,
                            PaymentRepository paymentRepository,
-                           ShipmentRepository shipmentRepository) {
+                           ShipmentRepository shipmentRepository,
+                           AuditLogRepository auditLogRepository) {
         this.userAccountRepository = userAccountRepository;
         this.customerRepository = customerRepository;
         this.salesOrderRepository = salesOrderRepository;
@@ -40,6 +43,7 @@ public class CustomerService {
         this.invoiceRepository = invoiceRepository;
         this.paymentRepository = paymentRepository;
         this.shipmentRepository = shipmentRepository;
+        this.auditLogRepository = auditLogRepository;
     }
 
     public CustomerDashboardResponse getCustomerDashboard(String username) {
@@ -108,15 +112,6 @@ public class CustomerService {
             // Invoice & payment status
             invoiceRepository.findBySoId(order.getSoId()).ifPresent(invoice -> {
                 orderDTO.setPaymentStatus(invoice.getStatus());
-                if (!"Paid".equalsIgnoreCase(invoice.getStatus())) {
-                    BigDecimal invoiceTotal = invoice.getTotalAmount();
-                    List<Payment> payments = paymentRepository.findByInvoiceId(invoice.getInvoiceId());
-                    BigDecimal paid = payments.stream().map(Payment::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-                    BigDecimal balance = invoiceTotal.subtract(paid);
-                    if (balance.compareTo(BigDecimal.ZERO) > 0) {
-                        // We will add up overall outstanding balance
-                    }
-                }
             });
 
             previousOrders.add(orderDTO);
@@ -216,6 +211,45 @@ public class CustomerService {
         return dashboard;
     }
 
+    @Transactional
+    public void deleteOrder(Integer orderId, String username) {
+        SalesOrder order = salesOrderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Sales order not found with ID: " + orderId));
+
+        BigDecimal orderAmt = order.getTotalAmount() != null ? order.getTotalAmount() : BigDecimal.ZERO;
+        String prevVal = "Order ID: " + orderId + ", Customer ID: " + order.getCustomerId() + ", Amount: ₹" + orderAmt + ", Status: " + order.getStatus();
+
+        // 1. Delete associated payments & invoice
+        invoiceRepository.findBySoId(orderId).ifPresent(inv -> {
+            List<Payment> payments = paymentRepository.findByInvoiceId(inv.getInvoiceId());
+            paymentRepository.deleteAll(payments);
+            invoiceRepository.delete(inv);
+        });
+
+        // 2. Delete associated shipment
+        shipmentRepository.findBySoId(orderId).ifPresent(shipmentRepository::delete);
+
+        // 3. Delete order line items
+        List<SalesOrderItem> items = salesOrderItemRepository.findBySoId(orderId);
+        salesOrderItemRepository.deleteAll(items);
+
+        // 4. Delete the sales order record
+        salesOrderRepository.delete(order);
+
+        // 5. Record Audit Log
+        String auditId = "AUD-" + (System.currentTimeMillis() % 100000);
+        AuditLog auditLog = new AuditLog(
+                auditId,
+                "DELETE",
+                "SALES_ORDER",
+                username != null ? username : "system",
+                "Permanently deleted Sales Order #" + orderId + " (Value: ₹" + orderAmt + ", Status: " + order.getStatus() + ")",
+                prevVal,
+                "ORDER_DELETED"
+        );
+        auditLogRepository.save(auditLog);
+    }
+
     private List<CartItemDTO> mapCartItems(List<SalesOrderItem> items) {
         List<CartItemDTO> itemDTOs = new ArrayList<>();
         for (SalesOrderItem item : items) {
@@ -236,4 +270,3 @@ public class CustomerService {
         return itemDTOs;
     }
 }
-

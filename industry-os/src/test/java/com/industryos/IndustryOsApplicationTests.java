@@ -456,5 +456,93 @@ class IndustryOsApplicationTests {
         assertTrue(prodCount > 0);
         assertTrue(userCount > 0);
     }
-}
 
+    @Test
+    @DisplayName("16. RDBMS DELETE: Delete User Account and Verify Relational Purge and Audit")
+    void testDeleteUserAccountAndAuditVerification() throws Exception {
+        // A. Register a test user to be deleted
+        RegisterRequest req = new RegisterRequest();
+        req.setFullName("Delete Account Test User");
+        req.setEmail("delete_user_test@industry-os.com");
+        req.setUsername("delete_me_user");
+        req.setPassword("Password@123");
+        req.setRole("EMPLOYEE");
+        req.setUserType("EMPLOYEE");
+        req.setDepartment("Production");
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isOk());
+
+        // Verify user exists in database
+        Integer initialUserCount = jdbcTemplate.queryForObject(
+                "SELECT count(*) FROM user_account WHERE username = 'delete_me_user'", Integer.class);
+        assertEquals(1, initialUserCount, "User account must exist in database prior to deletion");
+
+        // Obtain access token for the user
+        String token = obtainAccessToken("delete_me_user", "Password@123", "EMPLOYEE");
+
+        // B. Perform DELETE /api/users/me
+        mockMvc.perform(delete("/api/users/me")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true));
+
+        // C. RDBMS Direct Query: Verify user row was removed from 'user_account' table
+        Integer afterUserCount = jdbcTemplate.queryForObject(
+                "SELECT count(*) FROM user_account WHERE username = 'delete_me_user'", Integer.class);
+        assertEquals(0, afterUserCount, "User account must be removed from user_account table");
+        System.out.println("[RDBMS VERIFIED] User account delete_me_user successfully deleted from database");
+
+        // D. RDBMS Direct Query: Verify audit log entry exists
+        List<Map<String, Object>> auditLogs = jdbcTemplate.queryForList(
+                "SELECT * FROM audit_log WHERE entity_name = 'USER_ACCOUNT' AND action_type = 'DELETE' ORDER BY id DESC");
+        assertFalse(auditLogs.isEmpty(), "Audit log must record user deletion");
+        System.out.println("[RDBMS VERIFIED] User account deletion audit log verified: " + auditLogs.get(0));
+    }
+
+    @Test
+    @DisplayName("17. RDBMS DELETE: Delete Sales Order and Verify Cascaded Cleanup and Audit")
+    void testDeleteSalesOrderAndCascadeVerification() throws Exception {
+        String token = obtainAccessToken("ceo", "password123", "CEO");
+
+        // Find an order ID to delete
+        Integer orderId = jdbcTemplate.queryForObject(
+                "SELECT so_id FROM sales_order ORDER BY so_id DESC LIMIT 1", Integer.class);
+        assertNotNull(orderId, "A sales order must exist for deletion testing");
+        System.out.println("[RDBMS TARGET ORDER] Preparing to delete Sales Order #" + orderId);
+
+        // Execute DELETE /api/customer/orders/{id}
+        mockMvc.perform(delete("/api/customer/orders/" + orderId)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true));
+
+        // RDBMS Direct Query: Verify sales_order row deleted
+        Integer orderCount = jdbcTemplate.queryForObject(
+                "SELECT count(*) FROM sales_order WHERE so_id = ?", Integer.class, orderId);
+        assertEquals(0, orderCount, "Sales order must be removed from sales_order table");
+
+        // RDBMS Direct Query: Verify order items deleted
+        Integer itemsCount = jdbcTemplate.queryForObject(
+                "SELECT count(*) FROM sales_order_item WHERE so_id = ?", Integer.class, orderId);
+        assertEquals(0, itemsCount, "Sales order items must be cascaded/deleted");
+
+        // RDBMS Direct Query: Verify invoice deleted
+        Integer invoiceCount = jdbcTemplate.queryForObject(
+                "SELECT count(*) FROM invoice WHERE so_id = ?", Integer.class, orderId);
+        assertEquals(0, invoiceCount, "Associated invoice must be removed");
+
+        // RDBMS Direct Query: Verify shipment deleted
+        Integer shipmentCount = jdbcTemplate.queryForObject(
+                "SELECT count(*) FROM shipment WHERE so_id = ?", Integer.class, orderId);
+        assertEquals(0, shipmentCount, "Associated shipment must be removed");
+
+        // RDBMS Direct Query: Verify audit log entry exists
+        List<Map<String, Object>> auditLogs = jdbcTemplate.queryForList(
+                "SELECT * FROM audit_log WHERE entity_name = 'SALES_ORDER' AND action_type = 'DELETE' ORDER BY id DESC");
+        assertFalse(auditLogs.isEmpty(), "Audit log must record sales order deletion");
+        System.out.println("[RDBMS VERIFIED] Sales order deletion audit log verified: " + auditLogs.get(0));
+    }
+}

@@ -878,3 +878,51 @@ INSERT INTO payment (invoice_id, payment_date, amount, mode, ref_no) VALUES
   (17, '2026-07-01', 731836.0, 'Cheque', 'TXN293419'),
   (17, '2026-06-27', 1097754.0, 'Bank Transfer', 'TXN966027'),
   (18, '2026-08-31', 3787800.0, 'Bank Transfer', 'TXN305845');
+
+-- =============================================================================
+-- MODULE 6 : AUDIT LOG INITIAL SEED RECORDS
+-- =============================================================================
+
+INSERT INTO audit_log (audit_id, action_type, entity_name, username, payload_summary, previous_value, new_value, created_at) VALUES
+  ('AUD-BOOTSTRAP-01', 'INSERT', 'SYSTEM_INIT', 'system', 'Industrial ERP Database Schema and Core Seed Data initialized', 'None', 'Database initialized with 42 tables', CURRENT_TIMESTAMP),
+  ('AUD-BOOTSTRAP-02', 'INSERT', 'RBAC_SECURITY', 'admin', 'Default seed user accounts created with BCrypt encrypted credentials', 'None', 'Created 8 role-based user accounts', CURRENT_TIMESTAMP),
+  ('AUD-BOOTSTRAP-03', 'UPDATE', 'INVENTORY_BASE', 'system', 'Catalog pricing and reorder thresholds initialized', 'NULL', 'Baseline valuation and 18% GST active', CURRENT_TIMESTAMP);
+
+-- =============================================================================
+-- MODULE 7 : USER ACCOUNTS (PRE-CONFIGURED SEED USERS & REGISTRATION INSERTS)
+-- Default Password for all seed users is 'password123'
+-- =============================================================================
+
+INSERT INTO user_account (username, password, role, full_name, email, department_id, employee_id, customer_id, contractor_id, assigned_machine_id, enabled, created_at) VALUES
+  ('ceo', '/xV93R8Uv6xRWe.d7L4yZ8L1hE1fH5z7qJ2qZ1m4q7y6m', 'CEO', 'Suresh Pillai', 'ceo@indmfg.in', 1, 1, NULL, NULL, NULL, TRUE, CURRENT_TIMESTAMP),
+  ('gm', '/xV93R8Uv6xRWe.d7L4yZ8L1hE1fH5z7qJ2qZ1m4q7y6m', 'GENERAL_MANAGER', 'Anil Singh', 'gm@indmfg.in', 1, 2, NULL, NULL, NULL, TRUE, CURRENT_TIMESTAMP),
+  ('depthead_prod', '/xV93R8Uv6xRWe.d7L4yZ8L1hE1fH5z7qJ2qZ1m4q7y6m', 'DEPT_HEAD', 'Geeta Gupta', 'geeta.gupta4@indmfg.in', 1, 4, NULL, NULL, NULL, TRUE, CURRENT_TIMESTAMP),
+  ('depthead_maint', '/xV93R8Uv6xRWe.d7L4yZ8L1hE1fH5z7qJ2qZ1m4q7y6m', 'DEPT_HEAD', 'Ashok Saxena', 'ashok.saxena5@indmfg.in', 2, 5, NULL, NULL, NULL, TRUE, CURRENT_TIMESTAMP),
+  ('operator1', '/xV93R8Uv6xRWe.d7L4yZ8L1hE1fH5z7qJ2qZ1m4q7y6m', 'OPERATOR', 'Aarti Yadav', 'aarti.yadav17@indmfg.in', 1, 6, NULL, NULL, 1, TRUE, CURRENT_TIMESTAMP),
+  ('employee1', '/xV93R8Uv6xRWe.d7L4yZ8L1hE1fH5z7qJ2qZ1m4q7y6m', 'EMPLOYEE', 'Nitin Mishra', 'nitin.mishra14@indmfg.in', 1, 5, NULL, NULL, NULL, TRUE, CURRENT_TIMESTAMP),
+  ('customer1', '/xV93R8Uv6xRWe.d7L4yZ8L1hE1fH5z7qJ2qZ1m4q7y6m', 'CUSTOMER', 'Acme Engineering Solutions Ltd', 'purchase@acme.in', 1, NULL, 1, NULL, NULL, TRUE, CURRENT_TIMESTAMP),
+  ('transporter1', '/xV93R8Uv6xRWe.d7L4yZ8L1hE1fH5z7qJ2qZ1m4q7y6m', 'TRANSPORTER', 'SafeGuard Express Logistics', 'logistics@safeguard.in', 1, NULL, NULL, 1, NULL, TRUE, CURRENT_TIMESTAMP);
+
+-- -----------------------------------------------------------------------------
+-- DYNAMIC NEW USER REGISTRATION INSERTS (EXAMPLES & TEMPLATES FOR USER ADDITIONS)
+-- -----------------------------------------------------------------------------
+
+-- Example A: Insert new CUSTOMER user with linked customer domain profile
+INSERT INTO customer (customer_name, contact_person, phone, email, city, state, credit_limit, gstin)
+VALUES ('Apex Automotive Systems Pvt Ltd', 'Vikramaditya Rao', '+91 9876501234', 'procurement@apexauto.in', 'Pune', 'Maharashtra', 3500000.00, '27AABCA1234F1Z5');
+
+INSERT INTO user_account (username, password, role, full_name, email, department_id, customer_id, enabled)
+VALUES ('apex_buyer', '/xV93R8Uv6xRWe.d7L4yZ8L1hE1fH5z7qJ2qZ1m4q7y6m', 'CUSTOMER', 'Vikramaditya Rao', 'procurement@apexauto.in', 1, LAST_INSERT_ID(), TRUE);
+
+INSERT INTO audit_log (audit_id, action_type, entity_name, username, payload_summary, previous_value, new_value)
+VALUES ('AUD-REG-001', 'INSERT', 'CUSTOMER', 'apex_buyer', 'Registered new commercial account: Apex Automotive Systems', 'None', 'Customer ID mapped, role=CUSTOMER');
+
+-- Example B: Insert new PLANT OPERATOR with linked employee profile
+INSERT INTO employee (first_name, last_name, gender, dob, hire_date, email, phone, dept_id, desig_id, plant_id, shift_id, status)
+VALUES ('Sunil', 'Kulkarni', 'M', '1995-04-12', '2026-01-15', 'sunil.k@indmfg.in', '+91 9822099887', 1, 3, 1, 1, 'Active');
+
+INSERT INTO user_account (username, password, role, full_name, email, department_id, employee_id, assigned_machine_id, enabled)
+VALUES ('operator_sunil', '/xV93R8Uv6xRWe.d7L4yZ8L1hE1fH5z7qJ2qZ1m4q7y6m', 'OPERATOR', 'Sunil Kulkarni', 'sunil.k@indmfg.in', 1, LAST_INSERT_ID(), 2, TRUE);
+
+INSERT INTO audit_log (audit_id, action_type, entity_name, username, payload_summary, previous_value, new_value)
+VALUES ('AUD-REG-002', 'INSERT', 'EMPLOYEE', 'operator_sunil', 'Registered new operator: Sunil Kulkarni assigned to Machine #2', 'None', 'Employee ID mapped, role=OPERATOR');

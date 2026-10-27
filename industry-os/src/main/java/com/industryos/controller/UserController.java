@@ -4,10 +4,9 @@ import com.industryos.dto.response.ApiResponse;
 import com.industryos.dto.response.UserProfileResponse;
 import com.industryos.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -24,5 +23,17 @@ public class UserController {
         UserProfileResponse profile = userService.getCurrentUserProfile(authentication.getName());
         return ResponseEntity.ok(ApiResponse.ok("User profile retrieved successfully", profile));
     }
-}
 
+    @DeleteMapping("/me")
+    public ResponseEntity<ApiResponse<Void>> deleteCurrentAccount(Authentication authentication) {
+        userService.deleteUserAccount(authentication.getName());
+        return ResponseEntity.ok(ApiResponse.ok("User account deleted successfully from the database", null));
+    }
+
+    @DeleteMapping("/{username}")
+    @PreAuthorize("hasAnyRole('CEO', 'GENERAL_MANAGER')")
+    public ResponseEntity<ApiResponse<Void>> deleteUserAccount(@PathVariable String username) {
+        userService.deleteUserAccount(username);
+        return ResponseEntity.ok(ApiResponse.ok("User account '" + username + "' deleted successfully from the database", null));
+    }
+}

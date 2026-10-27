@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS industrial_mgmt;
+﻿DROP DATABASE IF EXISTS industrial_mgmt;
 CREATE DATABASE industrial_mgmt;
 USE industrial_mgmt;
 
@@ -417,7 +417,7 @@ CREATE TABLE shipment (
     delivered_on  DATE NULL,
     destination   VARCHAR(100) NOT NULL,
     status        ENUM('In Transit','Delivered','Delayed') NOT NULL DEFAULT 'In Transit',
-    FOREIGN KEY (so_id)      REFERENCES sales_order(so_id),
+    FOREIGN KEY (so_id)      REFERENCES sales_order(so_id) ON DELETE CASCADE,
     FOREIGN KEY (vehicle_id) REFERENCES vehicle(vehicle_id)
 );
 
@@ -429,7 +429,7 @@ CREATE TABLE invoice (
     amount       DECIMAL(14,2) NOT NULL,
     tax_amount   DECIMAL(14,2) NOT NULL,
     status       ENUM('Unpaid','Partial','Paid') NOT NULL DEFAULT 'Unpaid',
-    FOREIGN KEY (so_id) REFERENCES sales_order(so_id)
+    FOREIGN KEY (so_id) REFERENCES sales_order(so_id) ON DELETE CASCADE
 );
 
 CREATE TABLE payment (
@@ -439,18 +439,48 @@ CREATE TABLE payment (
     amount       DECIMAL(14,2) NOT NULL CHECK (amount > 0),
     mode         ENUM('Cash','UPI','Bank Transfer','Cheque') NOT NULL,
     ref_no       VARCHAR(30),
-    FOREIGN KEY (invoice_id) REFERENCES invoice(invoice_id)
+    FOREIGN KEY (invoice_id) REFERENCES invoice(invoice_id) ON DELETE CASCADE
 );
 
--- MODULE 6 : AUDIT
+-- =============================================================================
+-- MODULE 6 : AUDIT & ACTIVITY LOGS (TRANSACTIONAL AUDITING)
+-- =============================================================================
 
 CREATE TABLE audit_log (
-    log_id     INT AUTO_INCREMENT PRIMARY KEY,
-    table_name VARCHAR(40) NOT NULL,
-    action     VARCHAR(10) NOT NULL,
-    record_id  INT,
-    details    VARCHAR(255),
-    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id              BIGINT AUTO_INCREMENT PRIMARY KEY,
+    audit_id        VARCHAR(30) NOT NULL,
+    action_type     VARCHAR(20) NOT NULL, -- INSERT, UPDATE, DELETE
+    entity_name     VARCHAR(60) NOT NULL,
+    username        VARCHAR(60) NOT NULL,
+    payload_summary VARCHAR(500),
+    previous_value  VARCHAR(500),
+    new_value       VARCHAR(500),
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =============================================================================
+-- MODULE 7 : USER ACCOUNTS & AUTHENTICATION (RBAC & DOMAIN TABLE MAPPING)
+-- =============================================================================
+
+CREATE TABLE user_account (
+    id                   INT AUTO_INCREMENT PRIMARY KEY,
+    username             VARCHAR(60) NOT NULL UNIQUE,
+    password             VARCHAR(255) NOT NULL,
+    role                 VARCHAR(30) NOT NULL,
+    full_name            VARCHAR(100) NOT NULL,
+    email                VARCHAR(100) NOT NULL UNIQUE,
+    department_id        INT,
+    employee_id          INT,
+    customer_id          INT,
+    contractor_id        INT,
+    assigned_machine_id  INT,
+    enabled              BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (department_id)       REFERENCES department(dept_id) ON DELETE SET NULL,
+    FOREIGN KEY (employee_id)         REFERENCES employee(emp_id) ON DELETE SET NULL,
+    FOREIGN KEY (customer_id)         REFERENCES customer(customer_id) ON DELETE SET NULL,
+    FOREIGN KEY (contractor_id)       REFERENCES contractor(contractor_id) ON DELETE SET NULL,
+    FOREIGN KEY (assigned_machine_id) REFERENCES machine(machine_id) ON DELETE SET NULL
 );
 
 -- Helpful indexes for the most frequent joins / filters
@@ -460,3 +490,7 @@ CREATE INDEX idx_batch_wo      ON production_batch(wo_id);
 CREATE INDEX idx_soitem_so     ON sales_order_item(so_id);
 CREATE INDEX idx_so_customer   ON sales_order(customer_id);
 CREATE INDEX idx_maint_machine ON maintenance_log(machine_id);
+CREATE INDEX idx_user_username ON user_account(username);
+CREATE INDEX idx_user_role     ON user_account(role);
+CREATE INDEX idx_audit_created ON audit_log(created_at);
+CREATE INDEX idx_audit_action  ON audit_log(action_type);

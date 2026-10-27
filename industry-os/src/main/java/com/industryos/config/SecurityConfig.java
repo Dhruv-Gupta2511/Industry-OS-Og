@@ -75,9 +75,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/index.html", "/styles.css", "/app.js", "/favicon.ico", "/assets/**").permitAll()
                         .requestMatchers("/api/auth/**", "/h2-console/**", "/error").permitAll()
-                        .requestMatchers("/api/users/me").authenticated()
+                        .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/api/operator/**").hasAnyRole("OPERATOR", "CEO", "GENERAL_MANAGER")
-                        .requestMatchers("/api/customer/**").hasAnyRole("CUSTOMER", "CEO", "GENERAL_MANAGER")
+                        .requestMatchers("/api/customer/**").hasAnyRole("CUSTOMER", "CEO", "GENERAL_MANAGER", "DEPT_HEAD")
                         .requestMatchers("/api/transporter/**").hasAnyRole("TRANSPORTER", "CEO", "GENERAL_MANAGER")
                         .requestMatchers("/api/depthead/**").hasAnyRole("DEPT_HEAD", "CEO", "GENERAL_MANAGER")
                         .requestMatchers("/api/executive/**").hasAnyRole("CEO", "GENERAL_MANAGER")
@@ -103,4 +103,3 @@ public class SecurityConfig {
         return source;
     }
 }
-
