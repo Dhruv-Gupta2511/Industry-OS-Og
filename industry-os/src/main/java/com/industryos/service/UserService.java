@@ -91,7 +91,7 @@ public class UserService {
     public void deleteUserAccount(String identifier) {
         UserAccount user = null;
         try {
-            Integer id = Integer.parseInt(identifier);
+            Long id = Long.parseLong(identifier);
             user = userAccountRepository.findById(id).orElse(null);
         } catch (NumberFormatException ignored) {}
 

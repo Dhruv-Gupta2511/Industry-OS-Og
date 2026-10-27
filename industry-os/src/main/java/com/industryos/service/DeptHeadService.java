@@ -175,7 +175,7 @@ public class DeptHeadService {
             int good = 0;
             int rejected = 0;
             for (ProductionBatch b : batches) {
-                good += b.getGoodQty();
+                good += (b.getGoodQty() != null ? b.getGoodQty() : 0);
                 rejected += (b.getRejectedQty() != null ? b.getRejectedQty() : 0);
             }
             woDTO.setGoodProducedQty(good);

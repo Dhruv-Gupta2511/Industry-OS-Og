@@ -100,7 +100,7 @@ public class ExecutiveService {
         financials.setTotalInvoicedAmount(totalInvoiced);
 
         BigDecimal totalCollected = paymentRepository.findAll().stream()
-                .map(Payment::getAmount)
+                .map(p -> p.getAmount() != null ? p.getAmount() : BigDecimal.ZERO)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         financials.setTotalCollectedRevenue(totalCollected);
 
@@ -108,17 +108,17 @@ public class ExecutiveService {
         financials.setTotalAccountsReceivable(receivables.compareTo(BigDecimal.ZERO) > 0 ? receivables : BigDecimal.ZERO);
 
         BigDecimal totalBudgets = departmentRepository.findAll().stream()
-                .map(Department::getBudget)
+                .map(d -> d.getBudget() != null ? d.getBudget() : BigDecimal.ZERO)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         financials.setTotalDepartmentBudgets(totalBudgets);
 
         BigDecimal totalMaintenanceLabour = maintenanceLogRepository.findAll().stream()
-                .map(MaintenanceLog::getLabourCost)
+                .map(m -> m.getLabourCost() != null ? m.getLabourCost() : BigDecimal.ZERO)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         financials.setTotalMaintenanceCost(totalMaintenanceLabour);
 
         BigDecimal totalFleetCapacity = vehicleRepository.findAll().stream()
-                .map(Vehicle::getCapacityTons)
+                .map(v -> v.getCapacityTons() != null ? v.getCapacityTons() : BigDecimal.ZERO)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         financials.setTotalFleetCapacityTons(totalFleetCapacity);
 
@@ -149,8 +149,8 @@ public class ExecutiveService {
             }
 
             List<EnergyConsumption> energyList = energyConsumptionRepository.findByPlantId(plant.getPlantId());
-            BigDecimal kwh = energyList.stream().map(EnergyConsumption::getUnitsKwh).reduce(BigDecimal.ZERO, BigDecimal::add);
-            BigDecimal cost = energyList.stream().map(EnergyConsumption::getCost).reduce(BigDecimal.ZERO, BigDecimal::add);
+            BigDecimal kwh = energyList.stream().map(e -> e.getUnitsKwh() != null ? e.getUnitsKwh() : BigDecimal.ZERO).reduce(BigDecimal.ZERO, BigDecimal::add);
+            BigDecimal cost = energyList.stream().map(e -> e.getCost() != null ? e.getCost() : BigDecimal.ZERO).reduce(BigDecimal.ZERO, BigDecimal::add);
             pDTO.setTotalEnergyKwh(kwh);
             pDTO.setTotalEnergyCost(cost);
 

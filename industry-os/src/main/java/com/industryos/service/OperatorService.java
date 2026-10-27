@@ -119,7 +119,8 @@ public class OperatorService {
             List<MaintenancePartUsage> usages = maintenancePartUsageRepository.findByIdMaintIdIn(maintIds);
             for (MaintenancePartUsage usage : usages) {
                 Integer pId = usage.getId().getPartId();
-                partUsageMap.put(pId, partUsageMap.getOrDefault(pId, 0) + usage.getQtyUsed());
+                int qUsed = usage.getQtyUsed() != null ? usage.getQtyUsed() : 0;
+                partUsageMap.put(pId, partUsageMap.getOrDefault(pId, 0) + qUsed);
             }
         }
 
@@ -144,10 +145,12 @@ public class OperatorService {
             int used = partUsageMap.getOrDefault(part.getPartId(), 0);
             partDTO.setTotalUsedOnThisMachine(used);
 
-            if (part.getStockQty() <= 0) {
+            int stock = part.getStockQty() != null ? part.getStockQty() : 0;
+            int reorder = part.getReorderLevel() != null ? part.getReorderLevel() : 0;
+            if (stock <= 0) {
                 partDTO.setStockStatus("OUT_OF_STOCK");
                 partDTO.setReorderRecommended(true);
-            } else if (part.getStockQty() <= part.getReorderLevel()) {
+            } else if (stock <= reorder) {
                 partDTO.setStockStatus("LOW_STOCK");
                 partDTO.setReorderRecommended(true);
             } else {
